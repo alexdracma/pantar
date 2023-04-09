@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('shopping_lists', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('ingredient_id')->constrained('ingredients')->nullable(false);
+            $table->foreignId('user_id')->constrained('users')->nullable(false);
+            $table->float('amount');
+            $table->string('unit');
             $table->timestamps();
         });
     }

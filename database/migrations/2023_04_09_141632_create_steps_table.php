@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('steps', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('recipe_id')->constrained('recipes')->nullable(false);
+            $table->tinyInteger('step')->nullable(false);
+            $table->text('data')->nullable(false);
             $table->timestamps();
         });
     }

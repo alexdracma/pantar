@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('recipe_id')->constrained('recipes')->nullable(false);
+            $table->foreignId('user_id')->constrained('users')->nullable(false);
+            $table->text('slug');
             $table->timestamps();
         });
     }
