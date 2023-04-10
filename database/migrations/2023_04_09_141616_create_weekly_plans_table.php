@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('date')->nullable(false);
             $table->string('timeOfDay')->nullable(false);
             $table->timestamps();
+            $table->unique(['user_id', 'date', 'timeOfDay']);
         });
     }
 

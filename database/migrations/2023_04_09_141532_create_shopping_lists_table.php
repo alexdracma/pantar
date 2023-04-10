@@ -18,6 +18,7 @@ return new class extends Migration
             $table->float('amount');
             $table->string('unit');
             $table->timestamps();
+            $table->unique(['ingredient_id','user_id']);
         });
     }
 

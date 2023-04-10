@@ -17,6 +17,7 @@ return new class extends Migration
             $table->tinyInteger('step')->nullable(false);
             $table->text('data')->nullable(false);
             $table->timestamps();
+            $table->unique(['recipe_id', 'step']);
         });
     }
 
