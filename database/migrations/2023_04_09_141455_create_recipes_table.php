@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('recipes', function (Blueprint $table) {
             $table->id();
-            $table->integer('api_id')->unique();
+            $table->integer('api_id')->unique()->nullable();
             $table->string('title')->nullable(false);
             $table->tinyInteger('servings');
             $table->smallInteger('readyInMinutes');

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->nullable(false);
             $table->foreignId('post_id')->constrained('posts')->nullable(false);
             $table->timestamps();
+            $table->unique(['user_id', 'post_id']);
         });
     }
 
