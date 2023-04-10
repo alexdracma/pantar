@@ -2,17 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Models\Like;
+use App\Models\ShoppingList;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class LikeSeeder extends Seeder
+class ShoppingListSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Like::factory()->count(5)->create();
+        ShoppingList::factory()->count(5)->create();
     }
 }
