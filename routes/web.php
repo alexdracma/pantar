@@ -24,3 +24,13 @@ Route::get('/test', function () {
 Route::get('/account', function () {
     return view('app.account');
 });
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+});

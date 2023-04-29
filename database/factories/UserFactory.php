@@ -2,16 +2,19 @@
 
 namespace Database\Factories;
 
+use App\Models\Team;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use Faker\Factory as Faker;
+use Laravel\Jetstream\Features;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
- */
 class UserFactory extends Factory
 {
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
     protected $model = User::class;
 
     /**
@@ -21,18 +24,19 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-
-        $faker = Faker::create();
-
         return [
-            'name' => fake()->name(),
-            'surname' => $faker->lastName(),
-            'username' => $faker->userName(),
-            'email' => fake()->unique()->safeEmail(),
+            'name' => $this->faker->name(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'surname' => $this->faker->lastName(),
+            'username' => $this->faker->userName(),
             'email_verified_at' => now(),
             'password' => 'Password1', // password
-            'phone' => $faker->numberBetween(600000000, 699999999),
+            'phone' => $this->faker->numberBetween(600000000, 699999999),
+            'two_factor_secret' => null,
+            'two_factor_recovery_codes' => null,
             'remember_token' => Str::random(10),
+            'profile_photo_path' => null,
+            'current_team_id' => null,
         ];
     }
 
@@ -41,8 +45,31 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
-        ]);
+        return $this->state(function (array $attributes) {
+            return [
+                'email_verified_at' => null,
+            ];
+        });
+    }
+
+    /**
+     * Indicate that the user should have a personal team.
+     */
+    public function withPersonalTeam(callable $callback = null): static
+    {
+        if (! Features::hasTeamFeatures()) {
+            return $this->state([]);
+        }
+
+        return $this->has(
+            Team::factory()
+                ->state(fn (array $attributes, User $user) => [
+                    'name' => $user->name.'\'s Team',
+                    'user_id' => $user->id,
+                    'personal_team' => true,
+                ])
+                ->when(is_callable($callback), $callback),
+            'ownedTeams'
+        );
     }
 }
