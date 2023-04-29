@@ -1,0 +1,72 @@
+@import 'global';
+
+.w-90 {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+
+    img {
+        width: 100%;
+    }
+}
+
+header {
+    background-color: $background3;
+    height: 80vh;
+    max-height: 800px;
+
+    nav {
+        margin: auto !important;
+        padding-top: 2%;
+        width: 80%;
+    }
+
+    div#hero {
+        width: 90%;
+        margin: auto;
+
+        img {
+            width: 100%;
+        }
+    }
+
+    img#mainLogo {
+        height: auto;
+        width: 72%;
+    }
+
+    a {
+        text-decoration: none;
+        color: $body;
+    }
+}
+
+section#recipes {
+    background-color: $background1;
+}
+
+section#pantry {
+    background-color: $background3;
+}
+
+section#blog {
+    background-color: $background1;
+}
+
+footer {
+    background-color: $background3;
+
+    nav {
+        width: 90%;
+        margin: auto;
+
+        .logo {
+            width: 70%;
+        }
+    }
+
+    #copyBar {
+        color: $text3;
+    }
+}

@@ -1,0 +1,87 @@
+@import 'sidebar';
+
+main {
+    background-color: $background3;
+    min-height: 100vh;
+
+    div.container-xxl {
+        width: 50%;
+        margin: auto;
+
+        @media (max-width: 1400px) {
+            width: 60%;
+        }
+
+        @media (max-width: 1200px) {
+            width: 70%;
+        }
+
+        @media (max-width: 768px) {
+            width: 95% ;
+        }
+
+        div.searchContainer {
+            max-width: 844px;
+
+            input[type="search"] {
+                max-width: 600px;
+            }
+
+            img.searchIcon {
+                width: 31px;
+                position: absolute;
+                top: 7px;
+                left: 10px;
+            }
+
+            img.makeBlog {
+                filter: invert(91%) sepia(11%) saturate(150%) hue-rotate(197deg) brightness(89%) contrast(94%);
+                width: 27px;
+                height: 27px;
+                margin-right: 5px;
+            }
+        }
+
+        div.card {
+            border: 2px solid black;
+            position: relative;
+
+            div.recipeData {
+                position: absolute;
+                top: 5px;
+                right: 5px;
+                width: fit-content;
+                border: 2px solid black;
+                background-color: $neutral;
+                border-radius: 8px;
+
+                img {
+                    width: 30px;
+                }
+            }
+
+            img.card-img-top {
+                border-bottom: 2px solid black;
+            }
+
+            div.card-body {
+                min-height: 150px;
+            }
+
+            div.posterData {
+                img {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50rem;
+                    border: 2px solid black;
+                }
+            }
+
+            img.like {
+                width: 30px;
+                height: 30px;
+            }
+        }
+    }
+}
+

@@ -14,5 +14,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('landing');
+});
+
+Route::get('/test', function () {
+    return \App\Models\Post::find(2)->recipe;
+});
+
+Route::get('/account', function () {
+    return view('app.account');
 });

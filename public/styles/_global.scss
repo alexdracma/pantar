@@ -1,0 +1,58 @@
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap");
+@import 'variables';
+@import 'extraBootstrap';
+
+* {
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    font-family: 'Comfortaa', cursive !important;
+
+    h1, h2, h3, h4, h5, h6 {
+        color: $header !important;
+    }
+
+    p, span, div {
+        color: $body !important;
+    }
+
+    button {
+        background-color: $primary2;
+        border-radius: 8px;
+        border: none;
+        color: $text4;
+        padding: 10px 20px;
+        font-weight: 600;
+        font-size: 1rem;
+
+        &:hover {
+            background-color: $primary2Dark;
+            transition: background .5s;
+        }
+    }
+
+    input[type="search"] {
+        -webkit-appearance: none;
+        border-radius: 8px;
+        border: 2px solid black;
+        height: 46px;
+        width: 100%;
+        text-indent: 44px;
+
+        &:focus {
+            outline: black;
+        }
+    }
+
+    .nav-link {
+        color: $primary2;
+
+        &:hover {
+            color: $primary2Dark;
+        }
+    }
+
+}

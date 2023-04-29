@@ -1,0 +1,90 @@
+@import 'global';
+
+$iconSize: 65px;
+
+div#sidebar {
+    background-color: $background2;
+    width: 97px;
+    min-height: 100vh;
+    padding: 16px;
+    transition: width .5s;
+    
+    div.sidebarItems {
+        position: sticky;
+        height: fit-content;
+        position: -webkit-sticky;
+        top: 16px; /* required */
+    }
+
+    img.arrow {
+        width: 25px;
+        height: auto;
+        cursor: pointer;
+        display: block;
+        margin: auto;
+    }
+
+    div#arrowOpen {
+        position: relative;
+
+        img#logo {
+            width: 150px;
+            padding: 5px;
+        }
+
+        img.arrow {
+            position: absolute;
+            right: 12px;
+            height: 100%;
+            margin-left: auto;
+        }
+    }
+
+    ul#navIcons {
+        list-style-type: none;
+        padding: 0px;
+        margin: 0px;
+        position: relative;
+
+        img {
+            width: $iconSize;
+            height: $iconSize;
+        }
+
+        div.active {
+            position: absolute;
+            height: calc($iconSize + ($iconSize / 5));
+            top: -7px;
+            width: 125%;
+            max-width: 264px;
+            background-color: $background3;
+            left: -8px;
+            border-radius: 8px;
+            transition: top .5s;
+        }
+
+        li {
+            margin: 16px 0;
+            position: relative;
+            overflow: hidden;
+
+            a {
+                text-decoration: none;
+                color: $body;
+                overflow: hidden;
+                font-size: 1.5rem;
+                
+                span {
+                    width: 100%;
+                    
+                    margin-left: 12px;
+                    position: absolute;
+                    white-space: nowrap;
+                    line-height: $iconSize;
+                }
+            }
+        }
+    }
+    
+    
+}

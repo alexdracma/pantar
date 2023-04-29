@@ -1,0 +1,54 @@
+@import 'sidebar';
+
+$iconSize: 30px;
+
+main {
+    background-color: $background3;
+
+    div#userContainer {
+        background-color: $neutral;
+        border: 3px solid black;
+        border-radius: 8px;
+        width: 60%;
+
+        img#editPencil {
+            width: 35px;
+            position: absolute;
+            top: 8px;
+            right: 8px;
+        }
+
+        div#userMainData {
+
+            h6 {
+                line-height: 40px;
+                margin-bottom: 0px;
+            }
+            
+            img#userPfp {
+                border: 3px solid black;
+                border-radius: 100%;
+            }
+
+            img.icon {
+                height: 40px;
+            }
+        }
+
+        ul {
+            list-style-type: none;
+
+            li {
+                padding: 10px 0;
+    
+                img.icon {
+                    height: $iconSize;
+                }
+
+                span {
+                    line-height: $iconSize;
+                }
+            }
+        }
+    }
+}

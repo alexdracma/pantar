@@ -1,0 +1,133 @@
+@import 'sidebar';
+
+main {
+    background-color: $background3;
+
+    div.container-xxl {
+        width: 90%;
+        margin: auto;
+
+        div#calendar {
+            border: 8px solid black;
+            border-radius: 50px;
+            text-align: center !important;
+            position: relative;
+
+            div#hangers {
+                left: 50%;
+                transform: translateX(-50%);
+                top: -25px;
+                position: absolute;
+                width: 75%;
+                margin: auto !important;
+                border-left: 8px solid black;
+                border-right: 8px solid black;
+                height: 45px;
+            }
+
+            div#calendarHeader {
+                background-color: $primary1;
+                border-bottom: 8px solid black;
+                border-radius: 40px 40px 0 0;
+            }
+
+            div#calendarBody {
+                background-color: $neutral;
+                border-radius: 0 0 40px 40px;
+                font-size: 2rem;
+                font-weight: 600;
+                color: $primary2;
+
+                @media (max-width: 768px) {
+                   font-size: 1.5rem;
+                }
+
+                div#selectedDay {
+                    position: absolute;
+                    top: 180px;
+                    z-index: 1;
+                    width: 40px;
+                    height: 40px;
+                    background-color: $background2;
+                    border-radius: 50%;
+                }
+
+                div.row {
+                    margin: 5px 0;
+
+                    &>* {
+                        z-index: 2;
+                    }
+
+                    .day {
+                        cursor: default;
+                    }
+                }
+                
+            }
+        }
+
+        div#pad {
+            background-color: $neutral;
+            position: relative;
+            border: 8px solid black;
+            border-radius: 40px;
+
+            img#edit {
+                width: 27px;
+            }
+
+            h1, h3 {
+                color: $primary2;
+            }
+
+            div#clip {
+                border: 8px solid black;
+                border-radius: 20px 20px 30px 30px;
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                top: -40px;
+                background-color: $primary2;
+                height: 80px;
+                width: 40%;
+
+                @media (max-width: 768px) {
+                    height: 60px;
+                    width: 45%;
+                    top: -25px;
+                }
+            }
+
+            div.recipe {
+                width: 80%;
+                margin: auto;
+                border: 4px solid black;
+                border-radius: 8px;
+                height: fit-content;
+                min-height: 100px;
+                max-height: 120px;
+                
+                h4 {
+                    font-size: large;
+                }
+
+                div.col-5 {
+                    border-right: 4px solid black;
+                    background-color: red;
+
+                    img {
+                        border-radius: 4px 0 0 4px;
+                    }
+                }
+
+                img.add {
+                    width: 50px;
+                    height: auto;
+                }
+            }
+
+        }
+    }
+}
+

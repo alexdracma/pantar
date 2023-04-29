@@ -1,0 +1,76 @@
+@import 'sidebar';
+
+main {
+    background-color: $background3;
+
+    div#search {
+        position: sticky;
+        top: -30px;
+        z-index: 20;
+        background-color: $background3;
+
+        div.row {
+            max-width: 765px;
+            
+            input[type="search"] {
+                max-width: 600px;
+            }
+
+            img.searchIcon {
+                width: 31px;
+                position: absolute;
+                top: 7px;
+                left: 10px;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            top: 0px;
+        }
+    }
+
+    div.container-xxl {
+        width: 70%;
+        margin: auto;
+
+        @media screen and (max-width: 768px) {
+            width: 82%;
+        }
+
+        div#grid{
+            div.col {
+                border-style: solid;
+                border-width: 13px;
+                border-image: linear-gradient(to right, #31525b 0%, #31525b 21%, #48909C 21%, #48909C 21%, #48909C 22%, #48909C 100%) 1 0 1 0;
+                background-color: white;
+                padding: 10px 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+            img.ingredient {
+                width: 50px;
+            }
+
+            div#blueColumns {
+
+                min-width: calc(100% + 40px);
+                left: -20px;
+                min-height: calc(100% + 20px);
+                top: -11px;
+    
+                div.blueLine {
+                    width: 40px;
+                    background-color: $primary1;
+                    height: 100%;
+
+                    @media screen and (max-width: 768px) {
+                        width: 33px;
+                    }
+                }
+            }
+        }
+    }
+}
