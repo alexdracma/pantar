@@ -60,6 +60,6 @@ class User extends Authenticatable
     }
 
     public function weeklyPlans() {
-        return $this->belongsToMany(Ingredient::class, 'weeklyPlans');
+        return $this->belongsToMany(Recipe::class, 'weekly_plans');
     }
 }

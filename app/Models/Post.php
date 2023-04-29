@@ -18,6 +18,10 @@ class Post extends Model
     }
 
     public function recipe() {
-        return $this->hasOne(Recipe::class);
+        return $this->belongsTo(Recipe::class);
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class);
     }
 }
