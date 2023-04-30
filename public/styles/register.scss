@@ -1,0 +1,41 @@
+@import 'global';
+
+body {
+    background-color: $background2;
+    min-height: 850px;
+
+    div.logo {
+        width: fit-content;
+
+        img {
+            width: 250px;
+        }
+    }
+
+    form {
+        background-color: $neutral;
+        border: 2px solid black;
+        border-radius: 8px;
+        width: 100%;
+        max-width: 500px;
+
+        input {
+            border: 1px solid black !important;
+
+            &[type="checkbox"].form-check-input:checked {
+                background-color: $primary1;
+            }
+
+            &:not(input[type="checkbox"]) {
+                border-radius: 8px ;
+            }
+
+        }
+
+        a {
+            color: #7DCCDAFF;
+            text-decoration: none;
+
+        }
+    }
+}

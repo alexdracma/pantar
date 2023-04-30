@@ -21,6 +21,6 @@ class RouteButton extends Component
 
     public function render()
     {
-        return view('livewire.route-button');
+        return view('livewire.elements.route-button');
     }
 }

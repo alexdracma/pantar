@@ -17,6 +17,15 @@ Route::get('/', function () {
     return view('landing');
 });
 
+//Authenticated
+Route::middleware('auth')->group(function () {
+
+    //Dashboard
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+});
+
 Route::get('/test', function () {
     return \App\Models\Post::find(2)->recipe;
 });
@@ -25,12 +34,16 @@ Route::get('/account', function () {
     return view('app.account');
 });
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+Route::get('/log', function () {
+    return view('regis');
 });
+
+//Route::middleware([
+//    'auth:sanctum',
+//    config('jetstream.auth_session'),
+//    'verified'
+//])->group(function () {
+//    Route::get('/dashboard', function () {
+//        return view('dashboard');
+//    })->name('dashboard');
+//});
