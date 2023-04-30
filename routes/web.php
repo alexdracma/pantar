@@ -34,10 +34,6 @@ Route::get('/account', function () {
     return view('app.account');
 });
 
-Route::get('/log', function () {
-    return view('regis');
-});
-
 //Route::middleware([
 //    'auth:sanctum',
 //    config('jetstream.auth_session'),

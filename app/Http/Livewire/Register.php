@@ -17,8 +17,12 @@ class Register extends Component
     protected $rules = [
         'name' => ['required', 'string', 'max:255'],
         'surname' => ['required', 'string', 'max:255'],
-        'username' => ['required', 'string', 'max:255', 'unique:users'],
+        'username' => ['required', 'string', 'max:255', 'unique:users', 'regex:/^[^\x40]+$/u'],
         'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+    ];
+
+    protected $messages = [
+      'username.regex' => 'The username cannot contain @'
     ];
 
     public function updated($propertyName) {
