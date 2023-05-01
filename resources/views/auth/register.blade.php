@@ -1,8 +1,8 @@
 @extends('layouts.master')
 
-@section('css')
+@pushonce('styles')
     <link rel="stylesheet" href="styles/auth.css">
-@endsection
+@endpushonce
 
 @section('content')
     @livewire('register')

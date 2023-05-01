@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use \App\Http\Livewire\App;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+    Route::get('/app', App::class);
 });
 
 Route::get('/test', function () {
@@ -33,6 +36,8 @@ Route::get('/test', function () {
 Route::get('/account', function () {
     return view('app.account');
 });
+
+
 
 //Route::middleware([
 //    'auth:sanctum',

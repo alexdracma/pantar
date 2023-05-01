@@ -1,11 +1,11 @@
 const arrows = document.querySelectorAll('.arrow')
 const sideBar = document.getElementById('sidebar')
-const iconTexts = document.querySelectorAll('span.d-none')
+const iconTexts = sidebar.querySelectorAll('span.d-none')
 const arrowOpen = document.getElementById('arrowOpen')
 const arrowClosed = document.getElementById('arrowClosed')
-const links = document.querySelectorAll('a')
-const icons = document.querySelectorAll('img.icon')
-const active = document.querySelector('div.active')
+const links = sidebar.querySelectorAll('a')
+const icons = sidebar.querySelectorAll('img.icon')
+const active = sidebar.querySelector('div.active')
 
 arrows.forEach(arrow => {
     arrow.addEventListener('click', () => {
@@ -20,7 +20,6 @@ arrows.forEach(arrow => {
 links.forEach(link => {
     link.addEventListener('click', () => {
         active.style.top = (link.parentElement.offsetTop - 7) + 'px'
-
         turnOffIcons()
         turnOnIcon(link.querySelector('img.icon'))
     })
@@ -38,7 +37,7 @@ function openSidebar() {
 
 function closeSidebar() {
     sideBar.style.width = '97px'
-    
+
     arrowOpen.classList.remove('d-flex')
     arrowOpen.classList.add('d-none')
     arrowClosed.classList.remove('d-none')

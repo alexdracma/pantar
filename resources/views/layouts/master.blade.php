@@ -12,15 +12,16 @@
             integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous">
     </script>
     <!-- My files -->
-    @yield('css')
-    @yield('scripts')
+    @livewireStyles
+    @stack('styles')
+    @stack('scripts')
     <title>Pantar</title>
 </head>
 
-<body class="@yield('bodyClass')">
-    @yield('sidebar')
+<body>
 
-    @yield('content')
+    {{ $slot }}
+
+    @livewireScripts
 </body>
-
 </html>

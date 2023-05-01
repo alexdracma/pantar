@@ -1,7 +1,4 @@
-@import 'sidebar';
-
-main {
-    background-color: $background3;
+@import 'global';
 
     div.container-xxl {
         width: 90%;
@@ -63,7 +60,7 @@ main {
                         cursor: default;
                     }
                 }
-                
+
             }
         }
 
@@ -107,7 +104,7 @@ main {
                 height: fit-content;
                 min-height: 100px;
                 max-height: 120px;
-                
+
                 h4 {
                     font-size: large;
                 }
@@ -129,5 +126,3 @@ main {
 
         }
     }
-}
-

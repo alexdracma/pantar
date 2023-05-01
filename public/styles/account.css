@@ -1,1 +1,173 @@
-@import"https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap";*{box-sizing:border-box;margin:0px;padding:0px}body{font-family:"Comfortaa",cursive !important}body h1,body h2,body h3,body h4,body h5,body h6{color:#1b1c20 !important}body p,body span,body div{color:#383a47 !important}body button{background-color:#31525b;border-radius:8px;border:none;color:#cdced8;padding:12px 24px;font-weight:600;font-size:1rem}body button:hover{background-color:#1c2f35;transition:background .5s}body .nav-link{color:#31525b}body .nav-link:hover{color:#1c2f35}body .h-fit{height:-moz-fit-content;height:fit-content}div#sidebar{background-color:#fae6b1;width:97px;height:100vh;padding:16px;transition:width .5s}div#sidebar img.arrow{width:25px;height:auto;cursor:pointer;display:block;margin:auto}div#sidebar div#arrowOpen{position:relative}div#sidebar div#arrowOpen img#logo{width:150px;padding:5px}div#sidebar div#arrowOpen img.arrow{position:absolute;right:12px;height:100%;margin-left:auto}div#sidebar ul#navIcons{list-style-type:none;padding:0px;margin:0px;position:relative}div#sidebar ul#navIcons img{width:65px;height:65px}div#sidebar ul#navIcons div.active{position:absolute;height:78px;top:-7px;width:125%;max-width:264px;background-color:#f6f4ea;left:-8px;border-radius:8px;transition:top .5s}div#sidebar ul#navIcons li{margin:16px 0;position:relative;overflow:hidden}div#sidebar ul#navIcons li a{text-decoration:none;color:#383a47;overflow:hidden;font-size:1.5rem}div#sidebar ul#navIcons li a span{width:100%;margin-left:12px;position:absolute;white-space:nowrap;line-height:65px}main{background-color:#f6f4ea}main div#userContainer{background-color:#fff;border:3px solid #000;border-radius:8px;width:60%}main div#userContainer img#editPencil{width:35px;position:absolute;top:8px;right:8px}main div#userContainer div#userMainData h6{line-height:40px;margin-bottom:0px}main div#userContainer div#userMainData img#userPfp{border:3px solid #000;border-radius:100%}main div#userContainer div#userMainData img.icon{height:40px}main div#userContainer ul{list-style-type:none}main div#userContainer ul li{padding:10px 0}main div#userContainer ul li img.icon{height:30px}main div#userContainer ul li span{line-height:30px}
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap");
+.row-cols-7 > * {
+  flex: 0 0 auto;
+  width: 14.2857142857%;
+}
+
+.p-7 {
+  padding: 4.2rem;
+}
+
+.py-7 {
+  padding-top: 4.2rem;
+  padding-bottom: 4.2rem;
+}
+
+.px-7 {
+  padding-left: 4.2rem;
+  padding-right: 4.2rem;
+}
+
+.pt-7 {
+  padding-top: 4.2rem;
+}
+
+.pb-7 {
+  padding-bottom: 4.2rem;
+}
+
+.ps-7 {
+  padding-left: 4.2rem;
+}
+
+.pe-7 {
+  padding-right: 4.2rem;
+}
+
+.p-8 {
+  padding: 4.8rem;
+}
+
+.py-8 {
+  padding-top: 4.8rem;
+  padding-bottom: 4.8rem;
+}
+
+.px-8 {
+  padding-left: 4.8rem;
+  padding-right: 4.8rem;
+}
+
+.pt-8 {
+  padding-top: 4.8rem;
+}
+
+.pb-8 {
+  padding-bottom: 4.8rem;
+}
+
+.ps-8 {
+  padding-left: 4.8rem;
+}
+
+.pe-8 {
+  padding-right: 4.8rem;
+}
+
+@media (min-width: 768px) {
+  .pt-md-7 {
+    padding-top: 4.2rem !important;
+  }
+  .pt-md-8 {
+    padding-top: 4.8rem !important;
+  }
+}
+@media (min-width: 1200px) {
+  .pt-xl-8 {
+    padding-top: 4.8rem !important;
+  }
+}
+.w-fit {
+  width: fit-content;
+}
+
+.h-fit {
+  height: fit-content;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
+
+body {
+  font-family: "Comfortaa", cursive !important;
+}
+body main {
+  background-color: #F6F4EA;
+}
+body h1, body h2, body h3, body h4, body h5, body h6 {
+  color: #1B1C20 !important;
+}
+body p, body span, body div {
+  color: #383A47 !important;
+}
+body button {
+  background-color: #31525B;
+  border-radius: 8px;
+  border: none;
+  color: #CDCED8;
+  padding: 10px 20px;
+  font-weight: 600;
+  font-size: 1rem;
+}
+body button:hover {
+  background-color: #1c2f35;
+  transition: background 0.5s;
+}
+body input[type=search] {
+  -webkit-appearance: none;
+  border-radius: 8px;
+  border: 2px solid black;
+  height: 46px;
+  width: 100%;
+  text-indent: 44px;
+}
+body input[type=search]:focus {
+  outline: black;
+}
+body .nav-link {
+  color: #31525B;
+}
+body .nav-link:hover {
+  color: #1c2f35;
+}
+
+div#userContainer {
+  background-color: #FFF;
+  border: 3px solid black;
+  border-radius: 8px;
+  width: 60%;
+}
+div#userContainer img#editPencil {
+  width: 35px;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+div#userContainer div#userMainData h6 {
+  line-height: 40px;
+  margin-bottom: 0px;
+}
+div#userContainer div#userMainData img#userPfp {
+  border: 3px solid black;
+  border-radius: 100%;
+}
+div#userContainer div#userMainData img.icon {
+  height: 40px;
+}
+div#userContainer ul {
+  list-style-type: none;
+}
+div#userContainer ul li {
+  padding: 10px 0;
+}
+div#userContainer ul li img.icon {
+  height: 30px;
+}
+div#userContainer ul li span {
+  line-height: 30px;
+}
+
+/*# sourceMappingURL=account.css.map */

@@ -1,8 +1,8 @@
 @extends('layouts.master')
 
-@section('css')
+@pushonce('styles')
     <link rel="stylesheet" href="styles/landing.css">
-@endsection
+@endpushonce
 
 @section('content')
 
@@ -14,8 +14,13 @@
                 <img src="assets/images/title.svg" id="mainLogo">
             </div>
             <div class="col-6 d-flex justify-content-end align-items-center">
-                <a href="" class="fs-5 fw-semibold">Login</a>
-                <button class="ms-3">Get Started Free</button>
+                @auth
+                    <livewire:route-button :text="'Dashboard'" :route="'/dashboard'"/>
+                @else
+                    <a href="{{ route('login') }}" class="fs-5 fw-semibold">Login</a>
+                    <livewire:route-button :text="'Get Started Free'" :route="'/register'" :classes="'ms-3'"/>
+                @endauth
+
             </div>
         </nav>
         <div class="flex-grow-1 row d-flex align-items-center" id="hero">
@@ -70,7 +75,7 @@
     <footer class="container-xxl">
         <div class="w-50 m-auto text-center m-5 py-5 mb-4">
             <h2>Ready to start cooking? Start with Pantar, save money and the planet</h2>
-            <button class="mt-4">Get Started Free</button>
+            <livewire:route-button :text="'Get Started Free'" :route="'/register'" :classes="'mt-4'"/>
         </div>
 
         <!-- Footer navbar -->

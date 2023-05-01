@@ -1,7 +1,4 @@
-@import 'sidebar';
-
-main {
-    background-color: $background3;
+@import 'global';
 
     div.container-xxl {
         width: 70%;
@@ -54,5 +51,3 @@ main {
             }
         }
     }
-}
-

@@ -1,7 +1,4 @@
-@import 'sidebar';
-
-main {
-    background-color: $background3;
+@import 'global';
 
     div.container-xxl {
         width: 90%;
@@ -89,8 +86,8 @@ main {
                             border: 4px solid $primary2;
                             border-radius: 8px;
                             padding: 0 !important;
-                            
-                            
+
+
 
                             input[type="checkbox"] {
                                 position: absolute;
@@ -101,7 +98,7 @@ main {
                                 height: 30px;
                                 z-index: 5;
                                 opacity: 0;
-    
+
                                 & + span.check {
                                     display: inline-block;
                                     opacity: 0;
@@ -114,15 +111,15 @@ main {
                                     width: 30px;
                                     height: 30px;
                                 }
-    
+
                                 &:checked + span {
                                     opacity: 1;
                                     transition: opacity .3s;
 
-                                    
+
                                 }
                             }
-    
+
                             span.check1 {
                                 height: 4px;
                                 width: 10px;
@@ -134,7 +131,7 @@ main {
                                 left: 8px;
                                 z-index: 2;
                             }
-    
+
                             span.bg-check {
                                 position: absolute;
                                 top: 7px;
@@ -147,7 +144,7 @@ main {
                                 display: flex;
                                 overflow: visible;
                                 justify-content: end;
-    
+
                                 span.check2 {
                                     width: 80%;
                                     height: 4px;
@@ -186,4 +183,3 @@ main {
 
         }
     }
-}
