@@ -140,11 +140,19 @@ div.userContainer {
   border-radius: 8px;
   width: 60%;
 }
+div.userContainer input {
+  border: 2px solid black;
+  border-radius: 8px;
+}
+div.userContainer input::placeholder {
+  font-size: smaller;
+}
 div.userContainer img#editPencil {
   width: 35px;
   position: absolute;
   top: 8px;
   right: 8px;
+  cursor: pointer;
 }
 div.userContainer div#userMainData h6 {
   line-height: 40px;
@@ -164,6 +172,7 @@ div.userContainer div#userSessions {
 }
 div.userContainer ul {
   list-style-type: none;
+  padding-left: 2rem;
 }
 div.userContainer ul li {
   padding: 10px 0;

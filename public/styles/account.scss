@@ -8,11 +8,22 @@ $iconSize: 30px;
         border-radius: 8px;
         width: 60%;
 
+        input {
+
+            border: 2px solid black;
+            border-radius: 8px;
+
+            &::placeholder {
+                font-size: smaller;
+            }
+        }
+
         img#editPencil {
             width: 35px;
             position: absolute;
             top: 8px;
             right: 8px;
+            cursor: pointer;
         }
 
         div#userMainData {
@@ -40,6 +51,7 @@ $iconSize: 30px;
 
         ul {
             list-style-type: none;
+            padding-left: 2rem;
 
             li {
                 padding: 10px 0;
