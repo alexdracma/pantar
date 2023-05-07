@@ -1,8 +1,8 @@
-<div class="d-flex justify-content-center pt-5">
+<div class="d-flex justify-content-center pt-5 flex-column">
 
     <link rel="stylesheet" href="styles/account.css">
 
-    <div class="container-xxl h-fit position-relative" id="userContainer">
+    <div class="container-xxl h-fit position-relative userContainer">
         <img src="assets/icons/edit.svg" id="editPencil">
         <!-- Main user data row -->
         <div class="row pb-2 pt-4 d-flex align-items-center" id="userMainData">

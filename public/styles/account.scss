@@ -2,7 +2,7 @@
 
 $iconSize: 30px;
 
-    div#userContainer {
+    div.userContainer {
         background-color: $neutral;
         border: 3px solid black;
         border-radius: 8px;
@@ -30,6 +30,12 @@ $iconSize: 30px;
             img.icon {
                 height: 40px;
             }
+        }
+
+        div#userSessions {
+            min-height: 200px;
+            height: 200px;
+            background: red !important;
         }
 
         ul {
