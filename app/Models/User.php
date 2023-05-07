@@ -62,6 +62,11 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
+    //functions
+    public function fullName() {
+        return $this->name . ' ' . $this->surname;
+    }
+
     //relationships
     public function shoppingLists() {
         return $this->hasMany(ShoppingList::class);

@@ -62,6 +62,12 @@
             div.ingredients {
                 max-height: 77vh;
                 overflow: scroll;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+
+                &::-webkit-scrollbar{
+                    display: none;
+                }
 
                 div.col-12 {
                     display: flex;

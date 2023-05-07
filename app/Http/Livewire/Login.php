@@ -27,7 +27,7 @@ class Login extends Component
         $this->validateOnly('password');
 
         if (Auth::attempt([$this->identityType => $this->identity, 'password' => $this->password])) {
-            $this->redirect('/dashboard');          //If user was authenticated correctly, go to dashboard
+            $this->redirect('/app');          //If user was authenticated correctly, go to dashboard
         } else {
             throw ValidationException::withMessages([   //If the authentication was unsuccessful, throw error
                 'identity' => ['The identity or password you provided doesnt match our records']

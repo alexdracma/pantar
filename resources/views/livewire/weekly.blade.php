@@ -1,7 +1,6 @@
 <div class="container-xxl">
 
     <link rel="stylesheet" href="styles/weekly.css">
-    <script src="scripts/calendar.js" defer></script>
 
     <div class="row d-flex flex-column-reverse flex-md-row pt-4 pt-lg-5 pt-xl-8">
 
@@ -101,4 +100,16 @@
             </div>
         </section>
     </div>
+    <script>
+        const days = document.querySelectorAll('.day')
+        const dayIndicator = document.getElementById('selectedDay')
+
+        days.forEach(day => {
+            day.addEventListener('click', () => {
+                dayIndicator.style.top = day.offsetTop + 'px'
+                dayIndicator.style.left = (day.offsetLeft) + 'px'
+            })
+        });
+
+    </script>
 </div>

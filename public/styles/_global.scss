@@ -24,13 +24,13 @@ body {
     }
 
     button {
-        background-color: $primary2;
-        border-radius: 8px;
-        border: none;
-        color: $text4;
-        padding: 10px 20px;
-        font-weight: 600;
-        font-size: 1rem;
+        background-color: $primary2 !important;
+        border-radius: 8px !important;
+        border: none !important;
+        color: $text4 !important;
+        padding: 10px 20px !important;
+        font-weight: 600 !important;
+        font-size: 1rem !important;
 
         &:hover {
             background-color: $primary2Dark;

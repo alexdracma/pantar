@@ -19,8 +19,8 @@ body {
         width: 100%;
         max-width: 500px;
 
-        input {
-            border: 1px solid black !important;
+        input, x-inputs {
+            border: 1px solid black !important ;
 
             &[type="checkbox"].form-check-input:checked {
                 background-color: $primary1;

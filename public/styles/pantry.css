@@ -104,13 +104,13 @@ body p, body span, body div {
   color: #383A47 !important;
 }
 body button {
-  background-color: #31525B;
-  border-radius: 8px;
-  border: none;
-  color: #CDCED8;
-  padding: 10px 20px;
-  font-weight: 600;
-  font-size: 1rem;
+  background-color: #31525B !important;
+  border-radius: 8px !important;
+  border: none !important;
+  color: #CDCED8 !important;
+  padding: 10px 20px !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
 }
 body button:hover {
   background-color: #1c2f35;

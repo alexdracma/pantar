@@ -104,13 +104,13 @@ body p, body span, body div {
   color: #383A47 !important;
 }
 body button {
-  background-color: #31525B;
-  border-radius: 8px;
-  border: none;
-  color: #CDCED8;
-  padding: 10px 20px;
-  font-weight: 600;
-  font-size: 1rem;
+  background-color: #31525B !important;
+  border-radius: 8px !important;
+  border: none !important;
+  color: #CDCED8 !important;
+  padding: 10px 20px !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
 }
 body button:hover {
   background-color: #1c2f35;
@@ -134,39 +134,44 @@ body .nav-link:hover {
   color: #1c2f35;
 }
 
-div#userContainer {
+div.userContainer {
   background-color: #FFF;
   border: 3px solid black;
   border-radius: 8px;
   width: 60%;
 }
-div#userContainer img#editPencil {
+div.userContainer img#editPencil {
   width: 35px;
   position: absolute;
   top: 8px;
   right: 8px;
 }
-div#userContainer div#userMainData h6 {
+div.userContainer div#userMainData h6 {
   line-height: 40px;
   margin-bottom: 0px;
 }
-div#userContainer div#userMainData img#userPfp {
+div.userContainer div#userMainData img#userPfp {
   border: 3px solid black;
   border-radius: 100%;
 }
-div#userContainer div#userMainData img.icon {
+div.userContainer div#userMainData img.icon {
   height: 40px;
 }
-div#userContainer ul {
+div.userContainer div#userSessions {
+  min-height: 200px;
+  height: 200px;
+  background: red !important;
+}
+div.userContainer ul {
   list-style-type: none;
 }
-div#userContainer ul li {
+div.userContainer ul li {
   padding: 10px 0;
 }
-div#userContainer ul li img.icon {
+div.userContainer ul li img.icon {
   height: 30px;
 }
-div#userContainer ul li span {
+div.userContainer ul li span {
   line-height: 30px;
 }
 

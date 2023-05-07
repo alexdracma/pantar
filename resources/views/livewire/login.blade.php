@@ -22,6 +22,7 @@
             @enderror
         </div>
 {{-- To implement: remember me on login --}}
+{{--        LOOK LARAVEL.COM AUTHENTICATION Auth::viaRemember()--}}
 {{--        <div class="col-12 mt-4">--}}
 {{--            <input type="checkbox" name="remember" id="remember" class="form-check-input">--}}
 {{--            <label for="remember" class="form-check-label">Remember me</label>--}}

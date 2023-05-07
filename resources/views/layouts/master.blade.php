@@ -20,7 +20,11 @@
 
 <body>
 
-    {{ $slot }}
+    @hasSection('content')
+        @yield('content')
+    @else
+        {{ $slot }}
+    @endif
 
     @livewireScripts
 </body>

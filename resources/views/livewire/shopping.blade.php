@@ -1,7 +1,6 @@
 <div class="container-xxl pt-5">
 
     <link rel="stylesheet" href="styles/shopping.css">
-    <script src="scripts/line.js" defer></script>
 
     <div class="row d-flex flex-column flex-md-row">
         <div class="col-12 col-md-5 d-flex flex-column">
@@ -432,4 +431,26 @@
             </section>
         </div>
     </div>
+    <script>
+            const checks = document.querySelectorAll('input[type="checkbox"]')
+
+            checks.forEach(check => {
+
+                editCheck(check)
+
+                check.addEventListener('change', function() {
+                    editCheck(check)
+                })
+            })
+
+        function editCheck(check) {
+            const line = check.parentElement.parentElement.parentElement.querySelector('span.line')
+
+            if (check.checked) {
+                line.style.width = '100%'
+            } else {
+                line.style.width = '0%'
+            }
+        }
+    </script>
 </div>
