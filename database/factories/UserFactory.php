@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Jetstream\Features;
 
@@ -30,12 +31,12 @@ class UserFactory extends Factory
             'surname' => $this->faker->lastName(),
             'username' => $this->faker->userName(),
             'email_verified_at' => now(),
-            'password' => 'Password1', // password
+            'password' => Hash::make('Password1'), // password
             'phone' => $this->faker->numberBetween(600000000, 699999999),
             'two_factor_secret' => null,
             'two_factor_recovery_codes' => null,
             'remember_token' => Str::random(10),
-            'profile_photo_path' => null,
+            'profile_photo_path' => 'profile-photos/user.png',
             'current_team_id' => null,
         ];
     }
