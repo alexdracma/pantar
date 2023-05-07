@@ -82,11 +82,19 @@
             </div>
         </div>
         <!-- Logout row -->
-        <div class="row px-3 pb-4">
-            <div class="col text-end">
-                <button class="ms-auto">Logout</button>
+        <div class="row px-3 py-4">
+            <div class="col text-end d-flex justify-content-end">
+                @if (Laravel\Jetstream\Jetstream::hasAccountDeletionFeatures())
+                    @livewire('profile.delete-user-form')
+                @endif
+
+                <button class="ms-2">Logout</button>
             </div>
         </div>
+    </div>
+    <div class="userContainer container-xxl h-fit position-relative mt-3 p-3">
+        Browser Sessions
+        @livewire('profile.logout-other-browser-sessions-form')
     </div>
 </div>
 
