@@ -27,7 +27,7 @@
                     <span class="d-none">Recipes</span>
                 </a>
             </li>
-            <li wire:click="changeMain('pantry')">
+            <li wire:click="changeMain('userpantry')">
                 <a id="pantry">
                     <img src="assets/icons/pantry.svg" alt="" class="icon" wire:ignore>
                     <span class="d-none">My pantry</span>
