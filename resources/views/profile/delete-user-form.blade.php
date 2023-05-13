@@ -1,4 +1,4 @@
-<div>
+<div class="text-start">
     <button wire:click="confirmUserDeletion" wire:loading.attr="disabled">Delete Account</button>
 
     <!-- Delete User Confirmation Modal -->
