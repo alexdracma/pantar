@@ -59,6 +59,6 @@ class ChangePassword extends Component
     }
     public function render()
     {
-        return view('livewire.change-password');
+        return view('livewire.auth.change-password');
     }
 }
