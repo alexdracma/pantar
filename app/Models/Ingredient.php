@@ -15,4 +15,8 @@ class Ingredient extends Model
     public function pantries(): HasMany {
         return $this->hasMany(Pantry::class);
     }
+
+    public function availableUnits(): BelongsToMany {
+        return $this->belongsToMany(Unit::class, 'availableUnits');
+    }
 }
