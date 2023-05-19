@@ -12,8 +12,39 @@
 
 
     </div>
-
     <div class="container-xxl">
+
+    <!-- Ingredient Modal -->
+        @if($modalIngredientData !== null)
+            <x-dialog-modal wire:model="showIngredientModal" class="z-50">
+                <x-slot name="title"></x-slot>
+
+                <x-slot name="content">
+
+                    <div class="mt-4 container">
+                        <div class="row">
+                            <div class="col-4 d-flex flex-column justify-content-center align-items-center">
+                                <div class="bordered border-2 border-black bg-white h-52 p-2 rounded-[8px] d-flex
+                                align-items-center justify-content-center w-100">
+                                    <img src="{{ $modalIngredientData['imgPath'] }}" class="img-fluid">
+                                </div>
+                                <h5 class="mt-2">{{ $modalIngredientData['name'] }}</h5>
+                            </div>
+                            <div class="col-8">
+                                <div class="col-12 p-3">
+                                    <h4>You have <b>{{ $modalIngredientData['amount'] }}</b> {{ $modalIngredientData['unit'] }}</h4>
+                                </div>
+                                <div class="col-12 text-end p-2">
+                                    <button wire:click="$toggle('showIngredientModal')" wire:loading.attr="disabled">Ok</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </x-slot>
+
+                <x-slot name="footer"></x-slot>
+            </x-dialog-modal>
+        @endif
 
         <!-- Ingredients grid -->
         <div id="grid"
@@ -21,12 +52,14 @@
 
             @foreach($shownIngredients as $ingredient)
                 <div class="col">
-                    <div class="ingredientImage"><img src="assets/images/ingredients/broccoli.png" class="ingredient"></div>
-                    <div class="ingredientName mt-2">{{ $ingredient->name }}</div>
+                    <div class="z-30 d-flex flex-column justify-content-center align-items-center" wire:click="showIngredient({{$ingredient->id}})">
+                        <div class="ingredientImage"><img src="{{ $ingredient->getFullImgPath() }}" class="ingredient"></div>
+                        <div class="ingredientName mt-2">{{ $ingredient->name }}</div>
+                    </div>
                 </div>
             @endforeach
 
-            @if(count($shownIngredients) < 60) {{-- Filler blanks in case there're too few to display --}}
+           @if(count($shownIngredients) < 60) {{--  Filler blanks in case there're too few to display--}}
                 @for($i = count($shownIngredients); $i < 60; $i++)
                     <div class="col" style="min-height: 120px">
                         <div class="ingredientImage"></div>

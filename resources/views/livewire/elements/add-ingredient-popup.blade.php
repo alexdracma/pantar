@@ -10,7 +10,13 @@
             {{ __('Search ingredients in the dropdown menu and select them to add them to your pantry') }}
 
             <div class="mt-4">
-                @livewire('ingredient-search-bar')
+                <x-select class="w-50 border-2 border-black rounded-[8px]" placeholder="Select some ingredient"
+                    :async-data="route('api.ingredientsQuery')" option-label="name" option-value="id"
+                    wire:model="selectedIngredient"/>
+                <x-select class="w-50 border-2 border-black rounded-[8px]" placeholder="Select a unit of measurement"
+                    :options="$availableUnits" option-label="name" option-value="id"
+                    wire:model="selectedUnit" />
+                <x-inputs.number label="Amount" wire:model="amount"/>
             </div>
         </x-slot>
 

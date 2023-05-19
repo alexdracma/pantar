@@ -79,7 +79,8 @@ class User extends Authenticatable
     }
 
     public function pantries(): BelongsToMany {
-        return $this->belongsToMany(Ingredient::class, 'pantries');
+        return $this->belongsToMany(Ingredient::class, 'pantries')
+            ->withPivot('amount', 'unit');
     }
 
     public function weeklyPlans(): BelongsToMany {

@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use \App\Http\Livewire\App;
+use App\Http\Livewire\App;
+use App\Http\Controllers\ApiController;
+use App\Http\Middleware\VerifyCsrfToken;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,34 +19,24 @@ use \App\Http\Livewire\App;
 Route::get('/', function () {
     return view('landing');
 });
-
 //Authenticated
 Route::middleware('auth')->group(function () {
 
     //Dashboard
-    Route::get('/dashboard', function () {
-        return view('dashboard');
+    Route::get('/dashboard', function () { //override default jetstream dashboard to pantar's one
+        return redirect('/app');
     })->name('dashboard');
 
     Route::get('/app', App::class);
+
+    //Api controller
+    Route::controller(ApiController::class)->group(function () {
+        Route::prefix('api')->group(function () {
+           Route::get('/recipes', 'getRecipes')->name('api.recipesQuery');
+           Route::get('/ingredients', 'getIngredients')->name('api.ingredientsQuery');
+           Route::post('/conversion', 'addConversionToGrams')
+            ->withoutMiddleware(VerifyCsrfToken::class)
+            ->withoutMiddleware('auth');
+        });
+    });
 });
-
-Route::get('/test', function () {
-    return \App\Models\Post::find(2)->recipe;
-});
-
-Route::get('/account', function () {
-    return view('app.account');
-});
-
-
-
-//Route::middleware([
-//    'auth:sanctum',
-//    config('jetstream.auth_session'),
-//    'verified'
-//])->group(function () {
-//    Route::get('/dashboard', function () {
-//        return view('dashboard');
-//    })->name('dashboard');
-//});
