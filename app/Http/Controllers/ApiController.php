@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Ingredient;
 use App\Models\Recipe;
+use App\Models\Step;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Database\Eloquent\Builder;
@@ -19,14 +20,32 @@ class ApiController extends Controller
     }
 
     public function getRecipes(Request $request) {
-        return Recipe::query()
+        $dbRecipes = Recipe::query()
             ->select('*')
             ->when(
                 $request->search,
                 fn (Builder $query) => $query
                     ->where('title', 'like', '%' . strtolower($request->search) . '%')
             )
-            ->get();
+            ->get()
+            ->toArray();
+
+        if ($request->has('search')) {
+            if (count($dbRecipes) < 20) {
+                $apiRecipes = ($this->getRecipesFromApiWithQuery($this->client, $request->search))->results;
+                $dbApiRecipesIds = $this->getApiRecipesIds($dbRecipes);
+
+                $this->addApiRecipesToLocalDB($apiRecipes);
+
+                foreach ($apiRecipes as $recipe) {
+                    if (! in_array($recipe->id, $dbApiRecipesIds)) {
+                        array_push($dbRecipes, Recipe::firstWhere('api_id', $recipe->id));
+                    }
+                }
+            }
+        }
+
+        return $dbRecipes;
     }
 
     public function getIngredients(Request $request) {
@@ -92,12 +111,6 @@ class ApiController extends Controller
         return json_encode('missing arguments');
     }
 
-    public function test(Request $req) {
-        $ingredient = Ingredient::find($req->get('ingredient'))->name;
-        $unit = Unit::find($req->get('unit'))->name;
-        return $this->getConversionFromApi($this->client, $unit, $ingredient);
-    }
-
     private function getConversionFromApi(Client $client, $unit, $ingredient) {
         $url = 'recipes/convert';
         $params = [
@@ -115,7 +128,7 @@ class ApiController extends Controller
 
         end($answerArray); //move to the last position
 
-        return prev($answerArray); //return the ammount
+        return prev($answerArray); //return the amount
     }
 
     private function getIngredientsFromApiWithQuery(Client $client, string $query) {
@@ -133,11 +146,35 @@ class ApiController extends Controller
         return $answer;
     }
 
+    private function getRecipesFromApiWithQuery(Client $client, string $query) {
+        $url = "recipes/complexSearch";
+        $params = [
+            'query' => [
+                'apiKey' => config('api.apiKey'),
+                'query' => $query,
+                'number' => '30',
+                'sort' => 'popularity'
+            ]
+        ];
+
+        return json_decode($client->get($url, $params)->getBody());
+    }
+
     private function getModelIds($models) {
         $ids = [];
 
         foreach ($models as $model) {
             array_push($ids, $model['id']);
+        }
+
+        return $ids;
+    }
+
+    private function getApiRecipesIds($recipes) {
+        $ids = [];
+
+        foreach ($recipes as $recipe) {
+            $ids[] = $recipe['api_id'];
         }
 
         return $ids;
@@ -154,6 +191,11 @@ class ApiController extends Controller
                 $newIngredient->image = $ingredient->image;
                 $newIngredient->save();
 
+                if ($ingredient->possibleUnits === null) {
+                    $ingredient->possibleUnits =
+                        $this->getIngredientInformationFromApi($this->client, $ingredient->id)->possibleUnits;
+                }
+
                 //Update units table in db
                 $this->addUnitsToLocalDB($ingredient->possibleUnits);
 
@@ -163,6 +205,35 @@ class ApiController extends Controller
                     $newIngredient->availableUnits()->attach(Unit::where('name', $possibleUnit)->first());
                 }
             }
+        }
+    }
+
+    private function addApiRecipesToLocalDB($apiRecipes) {
+
+        $addedRecipesIds = null;
+
+        foreach ($apiRecipes as $recipe) {
+            //Only add the recipe to the local db if it doesn't exist in it already
+            if (Recipe::firstWhere('api_id', $recipe->id) === null) {
+                $newRecipe = new Recipe();
+                $newRecipe->api_id = $recipe->id;
+                $newRecipe->title = $recipe->title;
+                $newRecipe->image = $recipe->id . '-312x231.' . $recipe->imageType;
+                //mandatory data, example only
+                $newRecipe->servings = 1;
+                $newRecipe->readyInMinutes = 1;
+                $newRecipe->source = 'pantar.eu';
+                //save
+                $newRecipe->save();
+
+                //add the new recipe to the array
+                $addedRecipesIds[] = $recipe->id;
+            }
+        }
+
+        if ($addedRecipesIds !== null) {   //Get the recipe information for all the recipes added
+
+            $this->addRecipeInformationToLocalDB($addedRecipesIds);
         }
     }
 
@@ -177,5 +248,80 @@ class ApiController extends Controller
                 $newUnit->save();
             }
         }
+    }
+
+    private function addRecipeInformationToLocalDB($addedRecipesIds) {
+        $recipesInformation =  $this->getRecipeInformationFromApi($this->client, $addedRecipesIds);
+
+        foreach ($recipesInformation as $recipeInformation) {
+            //add the extra information to the already existing recipe
+            $dbRecipe = Recipe::firstWhere('api_id', $recipeInformation->id);
+            $dbRecipe->servings = $recipeInformation->servings;
+            $dbRecipe->readyInMinutes = $recipeInformation->readyInMinutes;
+            $dbRecipe->source = $recipeInformation->sourceUrl;
+            $dbRecipe->save();
+
+            //add the ingredients to the db
+            if ($dbRecipe->extendedIngredients !== null && count($dbRecipe->extendedIngredients) > 0) {
+
+                //add the ingredients from the recipe to the DB if they don't exist in it already
+                $this->addApiIngredientsToLocalDB($dbRecipe->extendedIngredients);
+
+                foreach ($dbRecipe->extendedIngredients as $ingredient) {
+
+                    $unit = Unit::firstWhere('name', $ingredient->unit);
+
+                    if ($unit === null) { //if the unit is not on the db already, add it
+                        $unit = new Unit();
+                        $unit->name = $ingredient->unit;
+                        $unit->save();
+                    }
+
+                    $dbRecipe->ingredients()
+                        ->attach(Ingredient::find($ingredient->id), ['amount' => $ingredient->amount, 'unit' => $unit]);
+
+                    //add the conversion of the unit to grams if not available yet
+                    $request = request();
+                    $request->merge(['unit' => $unit->id, 'ingredient' => $ingredient->id]);
+                    $this->addConversionToGrams($request);
+
+                }
+            }
+
+            //add the steps to the db
+            if ($dbRecipe->analyzedInstructions !== null && count($dbRecipe->analyzedInstructions) > 0) {
+                foreach ($dbRecipe->analyzedInstructions->steps as $instruction) {
+                    $step = new Step();
+                    $step->recipe_id = $dbRecipe->id;
+                    $step->step = $instruction->number;
+                    $step->data = $instruction->step;
+                    $step->save();
+                }
+            }
+
+        }
+    }
+
+    private function getRecipeInformationFromApi(Client $client, $recipesIds) {
+        $url = "recipes/informationBulk";
+        $params = [
+            'query' => [
+                'apiKey' => config('api.apiKey'),
+                'ids' => implode(',', $recipesIds),
+            ]
+        ];
+
+        return json_decode($client->get($url, $params)->getBody());
+    }
+
+    private function getIngredientInformationFromApi(Client $client, $ingredientId) {
+        $url = "food/ingredients/" . $ingredientId . "/information";
+        $params = [
+            'query' => [
+                'apiKey' => config('api.apiKey')
+            ]
+        ];
+
+        return json_decode($client->get($url, $params)->getBody());
     }
 }

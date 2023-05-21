@@ -3,16 +3,16 @@
 namespace Database\Factories;
 
 use App\Models\Recipe;
-use App\Models\Steps;
+use App\Models\Step;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Faker\Factory as Faker;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Steps>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Step>
  */
 class StepsFactory extends Factory
 {
-    protected $model = Steps::class;
+    protected $model = Step::class;
 
     /**
      * Define the model's default state.

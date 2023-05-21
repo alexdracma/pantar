@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Steps;
+use App\Models\Step;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,6 +13,6 @@ class StepsSeeder extends Seeder
      */
     public function run(): void
     {
-        Steps::factory()->count(5)->create();
+        Step::factory()->count(5)->create();
     }
 }

@@ -14,6 +14,12 @@ class Recipe extends Model
     }
 
     public function steps() {
-        return $this->hasMany(Steps::class);
+        return $this->hasMany(Step::class);
+    }
+
+    //My functions
+    public function getFullImgPath(): string {
+        $ingredientImgBaseUri = "https://spoonacular.com/recipeImages/";
+        return $ingredientImgBaseUri . $this->image;
     }
 }
