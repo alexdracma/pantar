@@ -16,7 +16,8 @@
             <div class="card mb-3 ps-0">
                 <div class="row h-100">
                     <div class="col-lg-4 pe-0">
-                        <img src="assets/images/Recipe1.png" class="recipeImg" alt="...">
+                        <img src="{{ 'https://spoonacular.com/recipeImages/' . $favorite->image }}"
+                             class="recipeImg" alt="...">
                     </div>
                     <div class="col-lg-8 p-0">
                         <div class="card-body h-100 d-flex flex-column justify-content-end">

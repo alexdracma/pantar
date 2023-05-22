@@ -9,11 +9,12 @@ use App\Models\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
 {
-    //private $apiKey = \Config::get('ap')aaa
-    private $client;
+    private Client $client;
 
     public function __construct(Client $client) {
         $this->client = $client;
@@ -27,8 +28,7 @@ class ApiController extends Controller
                 fn (Builder $query) => $query
                     ->where('title', 'like', '%' . strtolower($request->search) . '%')
             )
-            ->get()
-            ->toArray();
+            ->get();
 
         if ($request->has('search')) {
             if (count($dbRecipes) < 20) {
@@ -39,13 +39,29 @@ class ApiController extends Controller
 
                 foreach ($apiRecipes as $recipe) {
                     if (! in_array($recipe->id, $dbApiRecipesIds)) {
-                        array_push($dbRecipes, Recipe::firstWhere('api_id', $recipe->id));
+                        $dbRecipes[] = Recipe::firstWhere('api_id', $recipe->id);
                     }
                 }
             }
         }
 
-        return $dbRecipes;
+        return json_encode($dbRecipes);
+    }
+
+    public function getRecipesByIngredients(Request $request) {
+        if ($request->has('ingredients')) {
+            $apiRecipes = $this->getRecipesFromApiWithIngredients($this->client, $request->ingredients);
+
+            $this->addApiRecipesToLocalDB($apiRecipes);
+
+            $dbRecipes = [];
+
+            foreach ($apiRecipes as $apiRecipe) {
+                $dbRecipes[] = Recipe::firstWhere('api_id', $apiRecipe->id);
+            }
+
+            return json_encode($dbRecipes);
+        }
     }
 
     public function getIngredients(Request $request) {
@@ -65,17 +81,32 @@ class ApiController extends Controller
                 $apiIngredients = ($this->getIngredientsFromApiWithQuery($this->client, $request->search))->results;
                 $dbIngredientsIds = $this->getModelIds($dbIngredients);
 
-                $this->addApiIngredientsToLocalDB($apiIngredients); //Add the new found ingredients to the local db
+                $this->addApiIngredientsToLocalDB($apiIngredients); //Add the new-found ingredients to the local db
 
                 foreach ($apiIngredients as $ingredient) {
                     if (! in_array($ingredient->id, $dbIngredientsIds)) {
-                        array_push($dbIngredients, Ingredient::find($ingredient->id));
+                        $dbIngredients[] = Ingredient::find($ingredient->id);
                     }
                 }
             }
         }
 
         return $dbIngredients;
+    }
+
+    public function getUserIngredients(Request $request) {
+
+        if ($request->has('search')) {
+            return DB::table('pantries')
+                ->join('ingredients', 'pantries.ingredient_id', '=', 'ingredients.id')
+                ->where('ingredients.name', 'like', '%' . strtolower($request->search) . '%')
+                ->where('pantries.user_id', Auth::id())
+                ->select('ingredients.*')
+                ->take(15)
+                ->get();
+
+        }
+        return Auth::user()->pantries()->take(15)->get();
     }
 
     public function addConversionToGrams(Request $request) {
@@ -85,7 +116,7 @@ class ApiController extends Controller
             $reqIng = $request->get('ingredient');
             $unit = Unit::find($reqUnit);
 
-            if (in_array(strtolower($unit->name), ['g', 'grams', 'gram'])) { //if the unit tryng to convert to is alrady grams, refuse
+            if (in_array(strtolower($unit->name), ['g', 'grams', 'gram'])) { //if the unit trying to convert to is already grams, refuse
                 return json_encode('unit is already a gram');
             }
 
@@ -142,8 +173,7 @@ class ApiController extends Controller
             ]
         ];
 
-        $answer = json_decode($client->get($url, $params)->getBody());
-        return $answer;
+        return json_decode($client->get($url, $params)->getBody());
     }
 
     private function getRecipesFromApiWithQuery(Client $client, string $query) {
@@ -160,11 +190,25 @@ class ApiController extends Controller
         return json_decode($client->get($url, $params)->getBody());
     }
 
+    private function getRecipesFromApiWithIngredients(Client $client, $ingredients) {
+
+        $url = "recipes/findByIngredients";
+        $params = [
+            'query' => [
+                'apiKey' => config('api.apiKey'),
+                'ingredients' => $this->getCommaSeparatedList($ingredients),
+                'number' => '30',
+            ]
+        ];
+
+        return json_decode($client->get($url, $params)->getBody());
+    }
+
     private function getModelIds($models) {
         $ids = [];
 
         foreach ($models as $model) {
-            array_push($ids, $model['id']);
+            $ids[] = $model['id'];
         }
 
         return $ids;
@@ -307,7 +351,7 @@ class ApiController extends Controller
         $params = [
             'query' => [
                 'apiKey' => config('api.apiKey'),
-                'ids' => implode(',', $recipesIds),
+                'ids' => $this->getCommaSeparatedList($recipesIds),
             ]
         ];
 
@@ -323,5 +367,12 @@ class ApiController extends Controller
         ];
 
         return json_decode($client->get($url, $params)->getBody());
+    }
+
+    private function getCommaSeparatedList($toSeparate) {
+        if (is_string($toSeparate)) {
+            return $toSeparate;
+        }
+        return implode(',', $toSeparate);
     }
 }
