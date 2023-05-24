@@ -83,4 +83,3 @@
         </div>
     @endif
 </div>
-{{--$favorite->id--}}
