@@ -6,7 +6,7 @@
             </div>
             <div class="col-lg-7 p-0">
                 <div class="card-body h-100 d-flex flex-column justify-content-end">
-                    <h3 class="card-title mb-auto cursor-pointer pe-2">{{ $shownRecipe->title }} </h3>
+                    <h3 class="card-title mb-auto pe-2">{{ $shownRecipe->title }} </h3>
                     <div class="card-text mt-2 d-flex">
                         <img src="assets/icons/portions.svg" class="recipeIcon">
                         <span class="ms-2"><b>{{ $shownRecipe->servings }}</b> Servings</span>

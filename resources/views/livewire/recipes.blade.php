@@ -52,10 +52,10 @@
                                             <img src="assets/icons/portions.svg" class="recipeIcon">
                                             <span class="ms-2"><b>
                                                 @if(is_array($recipe))
-                                                        {{ $recipe['servings'] }}
-                                                    @else
-                                                        {{ $recipe->servings }}
-                                                    @endif
+                                                    {{ $recipe['servings'] }}
+                                                @else
+                                                    {{ $recipe->servings }}
+                                                @endif
                                             </b> Servings</span>
                                         </div>
                                         <div class="card-text d-flex justify-content-between align-items-end">
@@ -89,7 +89,7 @@
                                                     wire:click="toggleLike({{ $recipe['id'] }})"
                                                 @else
                                                     wire:click="toggleLike({{ $recipe->id }})"
-                                            @endif
+                                                @endif
                                             "
                                             >
                                         </div>
