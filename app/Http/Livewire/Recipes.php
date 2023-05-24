@@ -14,9 +14,10 @@ class Recipes extends Component
 
     public $shownRecipes = [];
     public $query;
-    public $loading = false;
+    public $showRecipe = false;
+    public $recipeToShow;
 
-    protected $listeners = ['ingredientSearch'];
+    protected $listeners = ['ingredientSearch', 'closeRecipe', 'toggleLike'];
 
     public function updatedQuery() {
         if (! empty(trim($this->query))) {
@@ -29,11 +30,16 @@ class Recipes extends Component
         return view('livewire.recipes');
     }
 
+    public function closeRecipe($memories) {
+        $this->showRecipe = false;
+        $this->shownRecipes = $memories;
+    }
+
     public function ingredientSearch($ingredients) {
         $this->shownRecipes = $this->getRecipesByIngredients($ingredients);
     }
 
-    public function toggleLike($recipeId) {
+    public function toggleLike($recipeId, bool $comesFromDetail = false) {
         if (userLikesRecipe($recipeId)) {
             Auth::user()->favorites()->detach($recipeId);
             toast()
@@ -46,6 +52,10 @@ class Recipes extends Component
                 ->success('The recipe has been successfully added to your favorites')
                 ->duration(3000)
                 ->push();
+        }
+
+        if ($comesFromDetail) {
+            $this->emit('updateLikes');
         }
     }
 
@@ -71,5 +81,16 @@ class Recipes extends Component
         ];
 
         return json_decode($intraClient->get($url, $params)->getBody());
+    }
+
+    public function showRecipe($recipeId) {
+        if (! recipeHasInformation($recipeId)) {
+            $intraClient = new Client(['base_uri' => config('app.url')]);
+            $url = "api/recipeinformation/" . $recipeId;
+            $intraClient->post($url);
+        }
+
+        $this->recipeToShow = $recipeId;
+        $this->showRecipe = true;
     }
 }

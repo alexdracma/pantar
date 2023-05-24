@@ -94,7 +94,8 @@ class ApiController extends Controller
         return $dbIngredients;
     }
 
-    public function getUserIngredients(Request $request) {
+    public function getUserIngredients(Request $request)
+    {
 
         if ($request->has('search')) {
             return DB::table('pantries')
@@ -109,16 +110,23 @@ class ApiController extends Controller
         return Auth::user()->pantries()->take(15)->get();
     }
 
+//    public function test() {
+//        $ingredients = DB::select('SELECT * FROM available_units');
+//        $vis = "";
+//        foreach ($ingredients as $ingredient) {
+//            $request = request();
+//            $request->merge(['unit' => $ingredient->unit_id, 'ingredient' => $ingredient->ingredient_id]);
+//            $this->addConversionToGrams($request);
+//        }
+//        return $vis;
+//    }
+
     public function addConversionToGrams(Request $request) {
         if ($request->has('unit') && $request->has('ingredient')) {
 
             $reqUnit = $request->get('unit');
             $reqIng = $request->get('ingredient');
             $unit = Unit::find($reqUnit);
-
-            if (in_array(strtolower($unit->name), ['g', 'grams', 'gram'])) { //if the unit trying to convert to is already grams, refuse
-                return json_encode('unit is already a gram');
-            }
 
             $availableUnit = Ingredient::find($reqIng)->availableUnits()->firstWhere('unit_id', $reqUnit);
 
@@ -128,7 +136,11 @@ class ApiController extends Controller
 
                     $ingredient = Ingredient::find($reqIng);
 
-                    $amount = $this->getConversionFromApi($this->client, $unit->name, $ingredient->name);
+                    if (in_array(strtolower($unit->name), ['g', 'grams', 'gram'])) { //if the unit trying to convert to is already grams, refuse
+                        $amount = 1;
+                    } else {
+                        $amount = $this->getConversionFromApi($this->client, $unit->name, $ingredient->name);
+                    }
 
                     $ingredient->availableUnits()->updateExistingPivot($unit, ['amount_in_grams' => $amount]);
 
@@ -233,9 +245,18 @@ class ApiController extends Controller
                 $newIngredient->id = $ingredient->id;
                 $newIngredient->name = $ingredient->name;
                 $newIngredient->image = $ingredient->image;
+
+                if ($newIngredient->image === null) {
+                    $newIngredient->image = 'ingredient.png';
+                }
+
+                if (isset($ingredient->nameClean)) { //if it comes from recipe add the ingredient with the clean name
+                    $newIngredient->name = $ingredient->nameClean;
+                }
+
                 $newIngredient->save();
 
-                if ($ingredient->possibleUnits === null) {
+                if (! isset($ingredient->possibleUnits)) {
                     $ingredient->possibleUnits =
                         $this->getIngredientInformationFromApi($this->client, $ingredient->id)->possibleUnits;
                 }
@@ -254,8 +275,6 @@ class ApiController extends Controller
 
     private function addApiRecipesToLocalDB($apiRecipes) {
 
-        $addedRecipesIds = null;
-
         foreach ($apiRecipes as $recipe) {
             //Only add the recipe to the local db if it doesn't exist in it already
             if (Recipe::firstWhere('api_id', $recipe->id) === null) {
@@ -269,15 +288,7 @@ class ApiController extends Controller
                 $newRecipe->source = 'pantar.eu';
                 //save
                 $newRecipe->save();
-
-                //add the new recipe to the array
-                $addedRecipesIds[] = $recipe->id;
             }
-        }
-
-        if ($addedRecipesIds !== null) {   //Get the recipe information for all the recipes added
-
-            $this->addRecipeInformationToLocalDB($addedRecipesIds);
         }
     }
 
@@ -294,24 +305,34 @@ class ApiController extends Controller
         }
     }
 
-    private function addRecipeInformationToLocalDB($addedRecipesIds) {
-        $recipesInformation =  $this->getRecipeInformationFromApi($this->client, $addedRecipesIds);
+    public function test() {
+        return $this->addRecipeInformationToLocalDB(365);
+    }
+
+    public function addRecipeInformationToLocalDB($recipeId) {
+
+        $recipesInformation = [];
+        $recipe = Recipe::find($recipeId);
+
+        if (! $recipe->informationAdded) {
+            $recipesInformation =  $this->getRecipeInformationFromApi($this->client, $recipe->api_id);
+        }
 
         foreach ($recipesInformation as $recipeInformation) {
             //add the extra information to the already existing recipe
             $dbRecipe = Recipe::firstWhere('api_id', $recipeInformation->id);
+
             $dbRecipe->servings = $recipeInformation->servings;
             $dbRecipe->readyInMinutes = $recipeInformation->readyInMinutes;
             $dbRecipe->source = $recipeInformation->sourceUrl;
-            $dbRecipe->save();
 
             //add the ingredients to the db
-            if ($dbRecipe->extendedIngredients !== null && count($dbRecipe->extendedIngredients) > 0) {
+            if ($recipeInformation->extendedIngredients !== null && count($recipeInformation->extendedIngredients) > 0) {
 
                 //add the ingredients from the recipe to the DB if they don't exist in it already
-                $this->addApiIngredientsToLocalDB($dbRecipe->extendedIngredients);
+                $this->addApiIngredientsToLocalDB($recipeInformation->extendedIngredients);
 
-                foreach ($dbRecipe->extendedIngredients as $ingredient) {
+                foreach ($recipeInformation->extendedIngredients as $ingredient) {
 
                     $unit = Unit::firstWhere('name', $ingredient->unit);
 
@@ -322,7 +343,11 @@ class ApiController extends Controller
                     }
 
                     $dbRecipe->ingredients()
-                        ->attach(Ingredient::find($ingredient->id), ['amount' => $ingredient->amount, 'unit' => $unit]);
+                        ->attach(Ingredient::find($ingredient->id), [
+                            'amount' => $ingredient->amount,
+                            'unit' => $unit->id,
+                            'recipeIngredientName' => $ingredient->name
+                        ]);
 
                     //add the conversion of the unit to grams if not available yet
                     $request = request();
@@ -333,8 +358,9 @@ class ApiController extends Controller
             }
 
             //add the steps to the db
-            if ($dbRecipe->analyzedInstructions !== null && count($dbRecipe->analyzedInstructions) > 0) {
-                foreach ($dbRecipe->analyzedInstructions->steps as $instruction) {
+            if ($recipeInformation->analyzedInstructions !== null && count($recipeInformation->analyzedInstructions[0]->steps) > 0) {
+
+                foreach ($recipeInformation->analyzedInstructions[0]->steps as $instruction) {
                     $step = new Step();
                     $step->recipe_id = $dbRecipe->id;
                     $step->step = $instruction->number;
@@ -343,15 +369,23 @@ class ApiController extends Controller
                 }
             }
 
+            $dbRecipe->informationAdded = true;
+            $dbRecipe->save();
+
         }
     }
+
+    private function getIngredientsIdsFromExtended($extendedIngredients) {
+
+    }
+
 
     private function getRecipeInformationFromApi(Client $client, $recipesIds) {
         $url = "recipes/informationBulk";
         $params = [
             'query' => [
                 'apiKey' => config('api.apiKey'),
-                'ids' => $this->getCommaSeparatedList($recipesIds),
+                'ids' => $recipesIds,
             ]
         ];
 
