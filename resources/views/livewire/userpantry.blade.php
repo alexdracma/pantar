@@ -2,15 +2,14 @@
     <link rel="stylesheet" href="styles/pantry.css">
 
     <!-- Search bar section -->
-    <div id="search" class="py-4 pt-md-7 pb-md-5 mx-3 mx-md-0">
+    <div id="search" class="z-50 py-4 pt-md-7 pb-md-5 mx-3 mx-md-0">
         <div class="row m-auto">
             @livewire('add-ingredient-popup')
             <div class="flex-md-grow-1 ms-md-3 col-12 col-sm-auto position-relative p-0">
                 <img src="assets/icons/search.svg" class="searchIcon">
                 <input type="search" wire:model="query" placeholder="Search ingredients in your pantry">
             </div>
-
-
+        </div>
     </div>
     <div class="container-xxl">
 
