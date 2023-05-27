@@ -16,7 +16,7 @@ class Ingredient extends Model
     }
 
     public function availableUnits(): BelongsToMany {
-        return $this->belongsToMany(Unit::class, 'available_Units')->withPivot('amount_in_grams');
+        return $this->belongsToMany(Unit::class, 'available_units')->withPivot('amount_in_grams');
     }
 
     //My functions

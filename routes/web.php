@@ -28,10 +28,10 @@ Route::middleware('auth')->group(function () {
 
     //Dashboard
     Route::get('/dashboard', function () { //override default jetstream dashboard to pantar's one
-        return redirect('/app');
+        return redirect('/pantar');
     })->name('dashboard');
 
-    Route::get('/app', App::class);
+    Route::get('/pantar', App::class);
 
     //Api controller
     Route::controller(ApiController::class)->group(function () {

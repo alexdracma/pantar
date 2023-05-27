@@ -15,7 +15,7 @@
             </div>
             <div class="col-6 d-flex justify-content-end align-items-center">
                 @auth
-                    <livewire:route-button :text="'Go to Pantar'" :route="'/app'"/>
+                    <livewire:route-button :text="'Go to Pantar'" :route="'/pantar'"/>
                 @else
                     <a href="{{ route('login') }}" class="fs-5 fw-semibold">Login</a>
                     <livewire:route-button :text="'Get Started Free'" :route="'/register'" :classes="'ms-3'"/>
