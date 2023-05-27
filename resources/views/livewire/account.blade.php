@@ -136,21 +136,4 @@
         <h5>Browser Sessions</h5>
         @livewire('profile.logout-other-browser-sessions-form')
     </div>
-
-{{--    <div class="userContainer container-xxl h-fit position-relative mt-3 p-3">--}}
-{{--        <x-select--}}
-
-{{--            class="w-100 border-2 border-black rounded-[8px]"--}}
-
-{{--            placeholder="Select some recipe"--}}
-
-{{--            :async-data="route('api.recipesQuery')"--}}
-
-{{--            option-label="title"--}}
-
-{{--            option-value="id"--}}
-
-{{--        />--}}
-{{--    </div>--}}
-
 </div>

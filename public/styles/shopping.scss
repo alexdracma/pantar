@@ -4,17 +4,53 @@
         width: 90%;
         margin: auto;
 
-        img.searchIcon {
-            position: absolute;
-            top: 7px;
-            left: 10px;
-            width: 31px;
+        div#ingredientSearch {
+
+            position: relative;
+
+            #searchBar {
+                -webkit-appearance: none;
+                border-radius: 8px;
+                border: 2px solid black;
+                height: 46px;
+                width: 100%;
+                text-indent: 40px;
+            }
+
+            img.searchIcon {
+                position: absolute;
+                top: 7px;
+                left: 10px;
+                width: 31px;
+                z-index: 80;
+            }
+
+            span.truncate.text-secondary-700 {
+                margin-left: 40px;
+            }
+
+            button {
+                display: none !important;
+            }
+
+            &:focus {
+                outline: black;
+            }
         }
 
         div#runningLowBox {
             border: 2px solid black;
             background-color: $neutral;
             border-radius: 8px;
+
+            div.overflow-scroll {
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+
+                &::-webkit-scrollbar{
+                    display: none;
+                }
+            }
 
             div.col-12 {
                 display: flex;

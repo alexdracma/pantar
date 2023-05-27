@@ -66,8 +66,9 @@ class User extends Authenticatable
     ];
 
     //relationships
-    public function shoppingLists(): HasMany {
-        return $this->hasMany(ShoppingList::class);
+    public function shoppingLists(): BelongsToMany {
+        return $this->belongsToMany(Ingredient::class, 'shopping_lists')
+            ->withPivot('amount', 'unit');
     }
 
     public function posts(): HasMany {

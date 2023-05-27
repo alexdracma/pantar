@@ -41,7 +41,7 @@
                                 {{ $ingredient->pivot->recipeIngredientName }}
                             </span>
                             <span class="ms-1">
-                                {{ $ingredient->pivot->amount }} {{ $this->getUnitName($ingredient->pivot->unit) }}
+                                {{ $ingredient->pivot->amount }} {{ getUnitNameById($ingredient->pivot->unit) }}
                             </span>
                         </li>
                     @endforeach

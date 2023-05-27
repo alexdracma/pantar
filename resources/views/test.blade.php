@@ -5,11 +5,7 @@
 
         <main class="flex-grow-1">
 
-            <link rel="stylesheet" href="styles/recipes.css">
-
-            <div class="container-xxl">
-                @livewire('recipe-detail', ['recipe' => 365, 'memory' => []])
-            </div>
+            @livewire('shopping')
 
         </main>
     </div>

@@ -37,8 +37,4 @@ class RecipeDetail extends Component
     public function toggleLike() {
         $this->emit('toggleLike', $this->shownRecipe->id, true);
     }
-
-    public function getUnitName($unit) {
-        return Unit::find($unit)->name;
-    }
 }

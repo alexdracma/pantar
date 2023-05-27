@@ -1,4 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap");
 .row-cols-7 > * {
   flex: 0 0 auto;
   width: 14.2857142857%;
@@ -138,16 +137,44 @@ div.container-xxl {
   width: 90%;
   margin: auto;
 }
-div.container-xxl img.searchIcon {
+div.container-xxl div#ingredientSearch {
+  position: relative;
+}
+div.container-xxl div#ingredientSearch #searchBar {
+  -webkit-appearance: none;
+  border-radius: 8px;
+  border: 2px solid black;
+  height: 46px;
+  width: 100%;
+  text-indent: 40px;
+}
+div.container-xxl div#ingredientSearch img.searchIcon {
   position: absolute;
   top: 7px;
   left: 10px;
   width: 31px;
+  z-index: 80;
+}
+div.container-xxl div#ingredientSearch span.truncate.text-secondary-700 {
+  margin-left: 40px;
+}
+div.container-xxl div#ingredientSearch button {
+  display: none !important;
+}
+div.container-xxl div#ingredientSearch:focus {
+  outline: black;
 }
 div.container-xxl div#runningLowBox {
   border: 2px solid black;
   background-color: #FFF;
   border-radius: 8px;
+}
+div.container-xxl div#runningLowBox div.overflow-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+div.container-xxl div#runningLowBox div.overflow-scroll::-webkit-scrollbar {
+  display: none;
 }
 div.container-xxl div#runningLowBox div.col-12 {
   display: flex;

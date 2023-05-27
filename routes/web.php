@@ -19,11 +19,12 @@ use App\Http\Middleware\VerifyCsrfToken;
 Route::get('/', function () {
     return view('landing');
 });
-Route::get('/test', function () {
-    return view('test');
-});
 //Authenticated
 Route::middleware('auth')->group(function () {
+
+    Route::get('/test', function () {
+        return view('test');
+    });
 
     //Dashboard
     Route::get('/dashboard', function () { //override default jetstream dashboard to pantar's one

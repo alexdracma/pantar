@@ -6,6 +6,12 @@ if (! function_exists('userLikesRecipe')) {
     }
 }
 
+if (! function_exists('ingredientIsInUserShoppingList')) {
+    function ingredientIsInUserShoppingList($ingredient) {
+        return \Illuminate\Support\Facades\Auth::user()->shoppingLists()->where('ingredient_id', $ingredient)->exists();
+    }
+}
+
 if (! function_exists('recipeHasInformation')) {
     function recipeHasInformation($recipe) {
         return \App\Models\Recipe::find($recipe)->informationAdded;
@@ -21,6 +27,12 @@ if (! function_exists('userHasIngredient')) {
 if (! function_exists('getUserPantry')) {
     function getUserPantry($ingredient) {
         return \Illuminate\Support\Facades\Auth::user()->pantries()->firstWhere('ingredient_id', $ingredient);
+    }
+}
+
+if (! function_exists('getIngredientTotalAmountInGrams')) {
+    function getIngredientTotalAmountInGrams($ingredient, $unit, $amount) {
+        return $amount * getIngredientAmountInGrams($ingredient, $unit);
     }
 }
 
@@ -53,5 +65,23 @@ if (! function_exists('getIngredientAmountInGrams')) {
         }
 
         return $amountInGrams->pivot->amount_in_grams;
+    }
+}
+
+if (! function_exists('getUnitNameById')) {
+    function getUnitNameById($unit) {
+        return \App\Models\Unit::find($unit)->name;
+    }
+}
+
+if (! function_exists('getIngredientNameById')) {
+    function getIngredientNameById($ingredient) {
+        return \App\Models\Ingredient::find($ingredient)->name;
+    }
+}
+
+if (! function_exists('getIngredientAvailableUnitsById')) {
+    function getIngredientAvailableUnitsById($ingredient) {
+        return \App\Models\Ingredient::find($ingredient)->availableUnits;
     }
 }

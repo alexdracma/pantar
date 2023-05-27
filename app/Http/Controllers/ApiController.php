@@ -305,10 +305,6 @@ class ApiController extends Controller
         }
     }
 
-    public function test() {
-        return $this->addRecipeInformationToLocalDB(365);
-    }
-
     public function addRecipeInformationToLocalDB($recipeId) {
 
         $recipesInformation = [];
@@ -374,11 +370,6 @@ class ApiController extends Controller
 
         }
     }
-
-    private function getIngredientsIdsFromExtended($extendedIngredients) {
-
-    }
-
 
     private function getRecipeInformationFromApi(Client $client, $recipesIds) {
         $url = "recipes/informationBulk";

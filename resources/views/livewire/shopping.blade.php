@@ -5,35 +5,62 @@
     <div class="row d-flex flex-column flex-md-row">
         <div class="col-12 col-md-5 d-flex flex-column">
 
+            <x-dialog-modal wire:model="showSelectIngredientAmountAndUnitPopup">
+                <x-slot name="title">
+                    {{ __("Select the ingredient's amount and unit") }}
+                </x-slot>
+
+                <x-slot name="content">
+
+                    <div class="mt-4 row">
+                        <div class="col-12 col-lg-6">
+                            <x-inputs.number placeholder="Amount" class="border-2 border-black rounded-[8px]"
+                                wire:model="amount"/>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <x-select class="border-2 border-black rounded-[8px]" placeholder="Select a unit of measurement"
+                                :options="$availableUnits" option-label="name" option-value="id" wire:model="selectedUnit" />
+                        </div>
+                    </div>
+                </x-slot>
+
+                <x-slot name="footer">
+                    <button wire:click="$toggle('showSelectIngredientAmountAndUnitPopup')"
+                        wire:loading.attr="disabled">Cancel</button>
+                    <button class="ml-3" wire:click="selectUnitAndAmount" wire:loading.attr="disabled">Add Ingredient</button>
+                </x-slot>
+            </x-dialog-modal>
+
             <!-- Ingredient search bar -->
-            <div class="col-12 position-relative">
+            <div class="col-12 position-relative" id="ingredientSearch">
                 <img src="assets/icons/search.svg" class="searchIcon">
-                <input type="search" name="" placeholder="Search an ingredient to add">
+                <x-select
+                    wire:model="selectedIngredient"
+                    placeholder="Select an ingredient to add"
+                    :async-data="route('api.ingredientsQuery')"
+                    option-label="name"
+                    option-value="id"
+                    class="border-2 border-black rounded-[8px]"
+                    id="searchBar"
+                />
             </div>
 
             <!-- Running low box -->
             <div class="col-12 d-none d-md-block mt-3 p-3" id="runningLowBox">
                 <h6>Running low</h4>
-                    <div class="px-3 pb-2 row mt-3">
-                        <div class="col-12">
-                            <img src="assets/images/ingredients/Garlic pic.png" class="p-1">
-                            <span class="ms-2 pb-1">Garlic</span>
-                            <img src="assets/icons/add_dark.svg" class="ms-auto d-block">
-                        </div>
-                        <div class="col-12">
-                            <img src="assets/images/ingredients/Tomato 1.png" class="p-1">
-                            <span class="ms-2 pb-1">Tomatos</span>
-                            <img src="assets/icons/add_dark.svg" class="ms-auto d-block">
-                        </div>
-                        <div class="col-12">
-                            <img src="assets/images/ingredients/potato pic.png" class="p-1">
-                            <span class="ms-2 pb-1">Potatos</span>
-                            <img src="assets/icons/add_dark.svg" class="ms-auto d-block">
-                        </div>
+                    <div class="px-3 pb-2 row mt-3 max-h-[40vh] overflow-scroll">
+                        @foreach($runningOut as $ingredient)
+                            <div class="col-12">
+                                <img src="{{ $ingredient->getFullImgPath() }}" class="p-2.5">
+                                <span class="ms-2 pb-1">{{ $ingredient->name }}</span>
+                                <img src="assets/icons/add_dark.svg" class="ms-auto d-block cursor-pointer"
+                                    wire:click="setSelectedIngredient({{ $ingredient->id }})">
+                            </div>
+                        @endforeach
                     </div>
             </div>
 
-            <button class="mt-auto text-right align-self-end mb-3">Finnish shopping</button>
+            <button class="mt-auto text-right align-self-end mb-3" wire:click="finishShopping">Finish shopping</button>
         </div>
 
         <div class="col-12 col-md-7 ps-lg-5">
@@ -42,390 +69,27 @@
                 <div id="pad" class="text-center">
                     <div id="clip"></div>
                     <div class="ingredients px-3 pb-2 row pt-8 px-4 px-md-5">
-                        <div class="col-12">
-                            <img src="assets/images/ingredients/Garlic pic.png" class="p-1">
-                            <span class="ms-2 pb-1 ingredient"><span class="line"></span>Garlic</span>
-                            <div class="ms-auto me-2 d-flex align-items-center">
+                        @foreach($shoppingList as $ingredient)
+                                <div class="col-12">
+                                    <img src="{{ $ingredient->getFullImgPath() }}" class="p-2.5">
+                                    <span class="ms-2 pb-1 ingredient"><span class="line"></span>
+                                        {{ $ingredient->name . ' (' . $ingredient->pivot->amount . ' ' .
+                                        getUnitNameById($ingredient->pivot->unit) . ')' }} </span>
+                                    <div class="ms-auto me-2 d-flex align-items-center">
 
-                                <div class="check">
-                                    <input type="checkbox" name="" id="">
-                                    <span class="check">
+                                        <div class="check">
+                                            <input type="checkbox" name="" id="">
+                                            <span class="check">
                                                 <span class="check1"></span>
                                                 <span class="bg-check"><span class="check2"></span></span>
                                             </span>
+                                        </div>
+
+                                        <img src="assets/icons/trash_sm.svg" class="cursor-pointer"
+                                             wire:click="removeFromShoppingList({{ $ingredient->id }})">
+                                    </div>
                                 </div>
-
-                                <img src="assets/icons/trash_sm.svg">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <img src="assets/images/ingredients/Tomato 1.png" class="p-1">
-                            <span class="ms-2 pb-1 ingredient"><span class="line"></span>Tomatos</span>
-                            <div class="ms-auto me-2 d-flex align-items-center">
-
-                                <div class="check">
-                                    <input type="checkbox" name="" id="">
-                                    <span class="check">
-                                                <span class="check1"></span>
-                                                <span class="bg-check"><span class="check2"></span></span>
-                                            </span>
-                                </div>
-
-                                <img src="assets/icons/trash_sm.svg">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <img src="assets/images/ingredients/potato pic.png" class="p-1">
-                            <span class="ms-2 pb-1 ingredient"><span class="line"></span>Potatos</span>
-                            <div class="ms-auto me-2 d-flex align-items-center">
-
-                                <div class="check">
-                                    <input type="checkbox" name="" id="">
-                                    <span class="check">
-                                                <span class="check1"></span>
-                                                <span class="bg-check"><span class="check2"></span></span>
-                                            </span>
-                                </div>
-
-                                <img src="assets/icons/trash_sm.svg">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <img src="assets/images/ingredients/Garlic pic.png" class="p-1">
-                            <span class="ms-2 pb-1 ingredient"><span class="line"></span>Garlic</span>
-                            <div class="ms-auto me-2 d-flex align-items-center">
-
-                                <div class="check">
-                                    <input type="checkbox" name="" id="">
-                                    <span class="check">
-                                                <span class="check1"></span>
-                                                <span class="bg-check"><span class="check2"></span></span>
-                                            </span>
-                                </div>
-
-                                <img src="assets/icons/trash_sm.svg">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <img src="assets/images/ingredients/Tomato 1.png" class="p-1">
-                            <span class="ms-2 pb-1 ingredient"><span class="line"></span>Tomatos</span>
-                            <div class="ms-auto me-2 d-flex align-items-center">
-
-                                <div class="check">
-                                    <input type="checkbox" name="" id="">
-                                    <span class="check">
-                                                <span class="check1"></span>
-                                                <span class="bg-check"><span class="check2"></span></span>
-                                            </span>
-                                </div>
-
-                                <img src="assets/icons/trash_sm.svg">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <img src="assets/images/ingredients/potato pic.png" class="p-1">
-                            <span class="ms-2 pb-1 ingredient"><span class="line"></span>Potatos</span>
-                            <div class="ms-auto me-2 d-flex align-items-center">
-
-                                <div class="check">
-                                    <input type="checkbox" name="" id="">
-                                    <span class="check">
-                                                <span class="check1"></span>
-                                                <span class="bg-check"><span class="check2"></span></span>
-                                            </span>
-                                </div>
-
-                                <img src="assets/icons/trash_sm.svg">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <img src="assets/images/ingredients/Garlic pic.png" class="p-1">
-                            <span class="ms-2 pb-1 ingredient"><span class="line"></span>Garlic</span>
-                            <div class="ms-auto me-2 d-flex align-items-center">
-
-                                <div class="check">
-                                    <input type="checkbox" name="" id="">
-                                    <span class="check">
-                                                <span class="check1"></span>
-                                                <span class="bg-check"><span class="check2"></span></span>
-                                            </span>
-                                </div>
-
-                                <img src="assets/icons/trash_sm.svg">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <img src="assets/images/ingredients/Tomato 1.png" class="p-1">
-                            <span class="ms-2 pb-1 ingredient"><span class="line"></span>Tomatos</span>
-                            <div class="ms-auto me-2 d-flex align-items-center">
-
-                                <div class="check">
-                                    <input type="checkbox" name="" id="">
-                                    <span class="check">
-                                                <span class="check1"></span>
-                                                <span class="bg-check"><span class="check2"></span></span>
-                                            </span>
-                                </div>
-
-                                <img src="assets/icons/trash_sm.svg">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <img src="assets/images/ingredients/potato pic.png" class="p-1">
-                            <span class="ms-2 pb-1 ingredient"><span class="line"></span>Potatos</span>
-                            <div class="ms-auto me-2 d-flex align-items-center">
-
-                                <div class="check">
-                                    <input type="checkbox" name="" id="">
-                                    <span class="check">
-                                                <span class="check1"></span>
-                                                <span class="bg-check"><span class="check2"></span></span>
-                                            </span>
-                                </div>
-
-                                <img src="assets/icons/trash_sm.svg">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <img src="assets/images/ingredients/Garlic pic.png" class="p-1">
-                            <span class="ms-2 pb-1 ingredient"><span class="line"></span>Garlic</span>
-                            <div class="ms-auto me-2 d-flex align-items-center">
-
-                                <div class="check">
-                                    <input type="checkbox" name="" id="">
-                                    <span class="check">
-                                                <span class="check1"></span>
-                                                <span class="bg-check"><span class="check2"></span></span>
-                                            </span>
-                                </div>
-
-                                <img src="assets/icons/trash_sm.svg">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <img src="assets/images/ingredients/Tomato 1.png" class="p-1">
-                            <span class="ms-2 pb-1 ingredient"><span class="line"></span>Tomatos</span>
-                            <div class="ms-auto me-2 d-flex align-items-center">
-
-                                <div class="check">
-                                    <input type="checkbox" name="" id="">
-                                    <span class="check">
-                                                <span class="check1"></span>
-                                                <span class="bg-check"><span class="check2"></span></span>
-                                            </span>
-                                </div>
-
-                                <img src="assets/icons/trash_sm.svg">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <img src="assets/images/ingredients/potato pic.png" class="p-1">
-                            <span class="ms-2 pb-1 ingredient"><span class="line"></span>Potatos</span>
-                            <div class="ms-auto me-2 d-flex align-items-center">
-
-                                <div class="check">
-                                    <input type="checkbox" name="" id="">
-                                    <span class="check">
-                                                <span class="check1"></span>
-                                                <span class="bg-check"><span class="check2"></span></span>
-                                            </span>
-                                </div>
-
-                                <img src="assets/icons/trash_sm.svg">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <img src="assets/images/ingredients/Garlic pic.png" class="p-1">
-                            <span class="ms-2 pb-1 ingredient"><span class="line"></span>Garlic</span>
-                            <div class="ms-auto me-2 d-flex align-items-center">
-
-                                <div class="check">
-                                    <input type="checkbox" name="" id="">
-                                    <span class="check">
-                                                <span class="check1"></span>
-                                                <span class="bg-check"><span class="check2"></span></span>
-                                            </span>
-                                </div>
-
-                                <img src="assets/icons/trash_sm.svg">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <img src="assets/images/ingredients/Tomato 1.png" class="p-1">
-                            <span class="ms-2 pb-1 ingredient"><span class="line"></span>Tomatos</span>
-                            <div class="ms-auto me-2 d-flex align-items-center">
-
-                                <div class="check">
-                                    <input type="checkbox" name="" id="">
-                                    <span class="check">
-                                                <span class="check1"></span>
-                                                <span class="bg-check"><span class="check2"></span></span>
-                                            </span>
-                                </div>
-
-                                <img src="assets/icons/trash_sm.svg">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <img src="assets/images/ingredients/potato pic.png" class="p-1">
-                            <span class="ms-2 pb-1 ingredient"><span class="line"></span>Potatos</span>
-                            <div class="ms-auto me-2 d-flex align-items-center">
-
-                                <div class="check">
-                                    <input type="checkbox" name="" id="">
-                                    <span class="check">
-                                                <span class="check1"></span>
-                                                <span class="bg-check"><span class="check2"></span></span>
-                                            </span>
-                                </div>
-
-                                <img src="assets/icons/trash_sm.svg">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <img src="assets/images/ingredients/Garlic pic.png" class="p-1">
-                            <span class="ms-2 pb-1 ingredient"><span class="line"></span>Garlic</span>
-                            <div class="ms-auto me-2 d-flex align-items-center">
-
-                                <div class="check">
-                                    <input type="checkbox" name="" id="">
-                                    <span class="check">
-                                                <span class="check1"></span>
-                                                <span class="bg-check"><span class="check2"></span></span>
-                                            </span>
-                                </div>
-
-                                <img src="assets/icons/trash_sm.svg">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <img src="assets/images/ingredients/Tomato 1.png" class="p-1">
-                            <span class="ms-2 pb-1 ingredient"><span class="line"></span>Tomatos</span>
-                            <div class="ms-auto me-2 d-flex align-items-center">
-
-                                <div class="check">
-                                    <input type="checkbox" name="" id="">
-                                    <span class="check">
-                                                <span class="check1"></span>
-                                                <span class="bg-check"><span class="check2"></span></span>
-                                            </span>
-                                </div>
-
-                                <img src="assets/icons/trash_sm.svg">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <img src="assets/images/ingredients/potato pic.png" class="p-1">
-                            <span class="ms-2 pb-1 ingredient"><span class="line"></span>Potatos</span>
-                            <div class="ms-auto me-2 d-flex align-items-center">
-
-                                <div class="check">
-                                    <input type="checkbox" name="" id="">
-                                    <span class="check">
-                                                <span class="check1"></span>
-                                                <span class="bg-check"><span class="check2"></span></span>
-                                            </span>
-                                </div>
-
-                                <img src="assets/icons/trash_sm.svg">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <img src="assets/images/ingredients/Garlic pic.png" class="p-1">
-                            <span class="ms-2 pb-1 ingredient"><span class="line"></span>Garlic</span>
-                            <div class="ms-auto me-2 d-flex align-items-center">
-
-                                <div class="check">
-                                    <input type="checkbox" name="" id="">
-                                    <span class="check">
-                                                <span class="check1"></span>
-                                                <span class="bg-check"><span class="check2"></span></span>
-                                            </span>
-                                </div>
-
-                                <img src="assets/icons/trash_sm.svg">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <img src="assets/images/ingredients/Tomato 1.png" class="p-1">
-                            <span class="ms-2 pb-1 ingredient"><span class="line"></span>Tomatos</span>
-                            <div class="ms-auto me-2 d-flex align-items-center">
-
-                                <div class="check">
-                                    <input type="checkbox" name="" id="">
-                                    <span class="check">
-                                                <span class="check1"></span>
-                                                <span class="bg-check"><span class="check2"></span></span>
-                                            </span>
-                                </div>
-
-                                <img src="assets/icons/trash_sm.svg">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <img src="assets/images/ingredients/potato pic.png" class="p-1">
-                            <span class="ms-2 pb-1 ingredient"><span class="line"></span>Potatos</span>
-                            <div class="ms-auto me-2 d-flex align-items-center">
-
-                                <div class="check">
-                                    <input type="checkbox" name="" id="">
-                                    <span class="check">
-                                                <span class="check1"></span>
-                                                <span class="bg-check"><span class="check2"></span></span>
-                                            </span>
-                                </div>
-
-                                <img src="assets/icons/trash_sm.svg">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <img src="assets/images/ingredients/Garlic pic.png" class="p-1">
-                            <span class="ms-2 pb-1 ingredient"><span class="line"></span>Garlic</span>
-                            <div class="ms-auto me-2 d-flex align-items-center">
-
-                                <div class="check">
-                                    <input type="checkbox" name="" id="">
-                                    <span class="check">
-                                                <span class="check1"></span>
-                                                <span class="bg-check"><span class="check2"></span></span>
-                                            </span>
-                                </div>
-
-                                <img src="assets/icons/trash_sm.svg">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <img src="assets/images/ingredients/Tomato 1.png" class="p-1">
-                            <span class="ms-2 pb-1 ingredient"><span class="line"></span>Tomatos</span>
-                            <div class="ms-auto me-2 d-flex align-items-center">
-
-                                <div class="check">
-                                    <input type="checkbox" name="" id="">
-                                    <span class="check">
-                                                <span class="check1"></span>
-                                                <span class="bg-check"><span class="check2"></span></span>
-                                            </span>
-                                </div>
-
-                                <img src="assets/icons/trash_sm.svg">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <img src="assets/images/ingredients/potato pic.png" class="p-1">
-                            <span class="ms-2 pb-1 ingredient"><span class="line"></span>Potatos</span>
-                            <div class="ms-auto me-2 d-flex align-items-center">
-
-                                <div class="check">
-                                    <input type="checkbox" name="" id="">
-                                    <span class="check">
-                                                <span class="check1"></span>
-                                                <span class="bg-check"><span class="check2"></span></span>
-                                            </span>
-                                </div>
-
-                                <img src="assets/icons/trash_sm.svg">
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             </section>
