@@ -18,43 +18,43 @@
             <li wire:click="changeMain('account')">
                 <a id="account">
                     <img src="assets/icons/account_colored.svg" alt="" class="icon" wire:ignore>
-                    <span class="d-none">My account</span>
+                    <span class="d-none position-absolute top-0 left-16">My account</span>
                 </a>
             </li>
             <li wire:click="changeMain('recipes')">
                 <a id="recipes">
                     <img src="assets/icons/recipes.svg" alt="" class="icon" wire:ignore>
-                    <span class="d-none">Recipes</span>
+                    <span class="d-none position-absolute top-0 left-16">Recipes</span>
                 </a>
             </li>
             <li wire:click="changeMain('userpantry')">
                 <a id="pantry">
                     <img src="assets/icons/pantry.svg" alt="" class="icon" wire:ignore>
-                    <span class="d-none">My pantry</span>
+                    <span class="d-none position-absolute top-0 left-16">My pantry</span>
                 </a>
             </li>
             <li wire:click="changeMain('weekly')">
                 <a id="weekly">
                     <img src="assets/icons/weekly.svg" alt="" class="icon" wire:ignore>
-                    <span class="d-none">Weekly plan</span>
+                    <span class="d-none position-absolute top-0 left-16">Weekly plan</span>
                 </a>
             </li>
             <li wire:click="changeMain('shopping')">
                 <a id="shopping">
                     <img src="assets/icons/shopping.svg" alt="" class="icon" wire:ignore>
-                    <span class="d-none">Shopping list</span>
+                    <span class="d-none position-absolute top-0 left-16">Shopping list</span>
                 </a>
             </li>
             <li wire:click="changeMain('blog')">
                 <a id="blog">
                     <img src="assets/icons/blog.svg" alt="" class="icon" wire:ignore>
-                    <span class="d-none">Blog</span>
+                    <span class="d-none position-absolute top-0 left-16">Blog</span>
                 </a>
             </li>
             <li wire:click="changeMain('favorites')">
                 <a id="favorite">
                     <img src="assets/icons/favorite.svg" alt="" class="icon" wire:ignore>
-                    <span class="d-none">Favorites</span>
+                    <span class="d-none position-absolute top-0 left-16">Favorites</span>
                 </a>
             </li>
         </ul>
