@@ -10,11 +10,11 @@ class Post extends Model
     use HasFactory;
 
     public function comments() {
-        return $this->hasMany(Comment::class);
+        return $this->belongsToMany(User::class, 'comments')->withPivot('content');
     }
 
     public function likes() {
-        return $this->hasMany(Like::class);
+        return $this->belongsToMany(User::class, 'likes');
     }
 
     public function recipe() {

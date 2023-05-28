@@ -95,7 +95,7 @@
                     </li>
                     <li class="row">
                         <div class="col-2 text-center">
-                            <img src="assets/icons/like_blog.svg" class="icon">
+                            <img src="assets/icons/like_blog_colored.svg" class="icon">
                         </div>
                         <div class="col-10">
                             <span>Likes from posts: {{ $user->likesFromPosts->count() }}</span>
