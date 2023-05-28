@@ -36,7 +36,7 @@ class Register extends Component
         Auth::attempt(['email' => $this->email,
             'password' => $this->password]);         //Authenticate the new user
 
-        $this->redirect('/app');           //Go to dashboard
+        $this->redirect('/pantar');           //Go to dashboard
     }
 
     public function render()
