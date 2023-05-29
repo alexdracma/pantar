@@ -360,7 +360,7 @@ class ApiController extends Controller
             }
 
             //add the steps to the db
-            if ($recipeInformation->analyzedInstructions !== null && count($recipeInformation->analyzedInstructions[0]->steps) > 0) {
+            if ($recipeInformation->analyzedInstructions !== null && count($recipeInformation->analyzedInstructions) > 0 && count($recipeInformation->analyzedInstructions[0]->steps) > 0) {
 
                 foreach ($recipeInformation->analyzedInstructions[0]->steps as $instruction) {
                     $step = new Step();

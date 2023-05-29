@@ -22,10 +22,6 @@ Route::get('/', function () {
 //Authenticated
 Route::middleware('auth')->group(function () {
 
-    Route::get('/test', function () {
-        return view('test');
-    });
-
     //Dashboard
     Route::get('/dashboard', function () { //override default jetstream dashboard to pantar's one
         return redirect('/pantar');
