@@ -2,7 +2,11 @@
     <div class="card mb-3 ps-0 mt-12">
         <div class="row h-100">
             <div class="col-lg-5 pe-0">
-                <img src="{{ $shownRecipe->getFullImgPath() }}" class="recipeImg" alt="...">
+                @if($isPost)
+                    <img src="{{ \Illuminate\Support\Facades\Storage::url($post->recipe->image) }}" class="recipeImg" alt="...">
+                @else
+                    <img src="{{ $shownRecipe->getFullImgPath() }}" class="recipeImg" alt="...">
+                @endif
             </div>
             <div class="col-lg-7 p-0">
                 <div class="card-body h-100 d-flex flex-column justify-content-end">
