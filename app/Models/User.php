@@ -88,11 +88,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Recipe::class, 'weekly_plans');
     }
 
-    public function likesFromPosts(): HasManyThrough {
-        return $this->hasManyThrough(Like::class, Post::class);
+    public function likesFromPosts(): BelongsToMany {
+        return $this->belongsToMany(Post::class, 'likes');
     }
 
-    public function commentsFromPosts(): HasManyThrough {
-        return $this->hasManyThrough(Comment::class, Post::class);
+    public function commentsFromPosts(): BelongsToMany {
+        return $this->belongsToMany(Post::class, 'comments');
     }
 }

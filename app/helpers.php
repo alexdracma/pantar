@@ -6,6 +6,12 @@ if (! function_exists('userLikesRecipe')) {
     }
 }
 
+if (! function_exists('userLikesPost')) {
+    function userLikesPost($post) {
+        return \App\Models\Post::find($post)->likes()->where('user_id', \Illuminate\Support\Facades\Auth::id())->exists();
+    }
+}
+
 if (! function_exists('ingredientIsInUserShoppingList')) {
     function ingredientIsInUserShoppingList($ingredient) {
         return \Illuminate\Support\Facades\Auth::user()->shoppingLists()->where('ingredient_id', $ingredient)->exists();

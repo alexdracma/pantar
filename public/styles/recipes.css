@@ -178,5 +178,12 @@ div.container-xxl div.card img.recipeIcon {
 div.container-xxl div.card div.card-body {
   min-height: 200px;
 }
+div.container-xxl ul.comments {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+div.container-xxl ul.comments::-webkit-scrollbar {
+  display: none;
+}
 
 /*# sourceMappingURL=recipes.css.map */

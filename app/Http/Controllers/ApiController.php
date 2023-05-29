@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ingredient;
+use App\Models\Post;
 use App\Models\Recipe;
 use App\Models\Step;
 use App\Models\Unit;
@@ -46,6 +47,22 @@ class ApiController extends Controller
         }
 
         return json_encode($dbRecipes);
+    }
+
+    public function getPostsRecipesWithQuery(Request $request) {
+
+        if ($request->has('search')) {
+            $postsRecipes = Recipe::query()
+                ->select('id')
+                ->where('api_id', null)
+                ->where('title', 'like', '%' . strtolower($request->search) . '%')
+                ->take(20)
+                ->get();
+
+            return json_encode($postsRecipes);
+        }
+
+        return json_encode('you need to provide a query');
     }
 
     public function getRecipesByIngredients(Request $request) {
@@ -109,17 +126,6 @@ class ApiController extends Controller
         }
         return Auth::user()->pantries()->take(15)->get();
     }
-
-//    public function test() {
-//        $ingredients = DB::select('SELECT * FROM available_units');
-//        $vis = "";
-//        foreach ($ingredients as $ingredient) {
-//            $request = request();
-//            $request->merge(['unit' => $ingredient->unit_id, 'ingredient' => $ingredient->ingredient_id]);
-//            $this->addConversionToGrams($request);
-//        }
-//        return $vis;
-//    }
 
     public function addConversionToGrams(Request $request) {
         if ($request->has('unit') && $request->has('ingredient')) {

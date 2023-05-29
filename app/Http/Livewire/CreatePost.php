@@ -28,7 +28,6 @@ class CreatePost extends Component
 
     public $ingredients = [];
     public $selectedIngredient;
-    public $test = [];
 
     protected $rules = [
         'newRecipe.title' => 'required',
@@ -37,24 +36,23 @@ class CreatePost extends Component
         'newPost.slug' => 'required'
     ];
 
-    protected $listeners = ['test' => 'showtest'];
+    public function mount() {
+        $this->newPost = new Post();
+        $this->newRecipe = new Recipe();
+    }
 
-    public function showtest() {
-        dd('slay');
+    public function render()
+    {
+        return view('livewire.create-post');
+    }
+
+    public function setUnit($ingredient, $selectedUnit) {
+        $this->ingredients[$ingredient]['selectedUnit'] = $selectedUnit;
     }
     public function updatedSelectedIngredient() {
         if ($this->selectedIngredient !== null) {
             $this->addIngredient();
         }
-    }
-
-    public function updatedTest() {
-        dd($this->test);
-    }
-
-    public function mount() {
-        $this->newPost = new Post();
-        $this->newRecipe = new Recipe();
     }
 
     private function uploadPhoto() {
@@ -65,15 +63,11 @@ class CreatePost extends Component
         return $this->photo->store('recipes', 'public');
     }
 
-    public function render()
-    {
-        return view('livewire.create-post');
-    }
-
     private function addIngredient() {
         $this->ingredients[$this->ingredientCounter] =
             ['id' => $this->selectedIngredient, 'name' => getIngredientNameById($this->selectedIngredient),
-                'availableUnits' => [Unit::find(1)]];
+                'availableUnits' => Unit::findMany(getIngredientAvailableUnitsById($this->selectedIngredient)),
+                'amount' => null, 'selectedUnit' => null];
         $this->ingredientCounter++;
         $this->selectedIngredient = null;
     }
@@ -81,13 +75,6 @@ class CreatePost extends Component
     public function addStep() {
         $this->steps[$this->stepCounter] = '';
         $this->stepCounter++;
-    }
-
-    public function seeSteps() {
-//        foreach ($this->ingredients as $ingredient => $data) {
-//            dd($data['selectedUnit']);
-//        }
-        dd($this->test);
     }
 
     public function createPost() {
@@ -108,7 +95,7 @@ class CreatePost extends Component
 
         $counter = 0; //I'll use my own counter as the user might add empty steps
         foreach ($this->steps as $step => $data) {
-            if (! empty($data)) {
+            if (! empty(trim($data))) {
                 $newStep = new Step();
                 $newStep->recipe_id = $this->newRecipe->id;
                 $newStep->step = $counter;
@@ -120,11 +107,19 @@ class CreatePost extends Component
         }
 
         foreach ($this->ingredients as $ingredient => $data) {
-            dd($data);
+
+            if ($data['amount'] !== null && $data['selectedUnit'] !== null) {
+                $this->newRecipe->ingredients()
+                    ->attach(Ingredient::find($data['id']), [
+                        'amount' => $data['amount'],
+                        'unit' => $data['selectedUnit'],
+                        'recipeIngredientName' => $data['name']
+                    ]);
+            }
         }
 
         toast()
-            ->success('Your post was added succesfully!')
+            ->success('Your post was added successfully!')
             ->duration(3000)
             ->push();
 

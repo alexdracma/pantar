@@ -36,7 +36,9 @@ Route::middleware('auth')->group(function () {
     //Api controller
     Route::controller(ApiController::class)->group(function () {
         Route::prefix('api')->group(function () {
-            Route::get('/test', 'test');
+            Route::get('/postsrecipes', 'getPostsRecipesWithQuery')
+                ->withoutMiddleware(VerifyCsrfToken::class)
+                ->withoutMiddleware('auth');
             Route::get('/recipes', 'getRecipes')->name('api.recipesQuery')
                 ->withoutMiddleware(VerifyCsrfToken::class)
                 ->withoutMiddleware('auth');

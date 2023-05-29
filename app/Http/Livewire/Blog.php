@@ -69,7 +69,7 @@ class Blog extends Component
     }
 
     private function getPostsByQuery(string $query) {
-        if (! empty($query)) {
+        if (! empty(trim($query))) {
             $intraClient = new Client(['base_uri' => config('app.url')]);
             $url = "api/postsrecipes";
             $params = [

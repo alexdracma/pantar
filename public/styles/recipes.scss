@@ -50,4 +50,13 @@
                 min-height: 200px;
             }
         }
+
+        ul.comments {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+
+            &::-webkit-scrollbar{
+                display: none;
+            }
+        }
     }
