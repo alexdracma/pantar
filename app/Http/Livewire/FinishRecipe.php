@@ -81,7 +81,11 @@ class FinishRecipe extends Component
                 $newAvailable = $userHasAvailableOfIngredientInGrams - $amountCookedInGrams;
                 if ($newAvailable <= 0) {
                     Auth::user()->pantries()->detach(Ingredient::find($ingredient->id));
-                    //IMPLEMENT ADD TO SHOPPING LIST
+
+                    if (! ingredientIsInUserShoppingList($ingredient->id)) {
+                        Auth::user()->shoppingLists()->attach($ingredient->id, ['amount' => 500, 'unit' => getUnitIdByName('g')]);
+                    }
+
                     toast()
                         ->info("You've run out of " . $ingredient->name .
                             ", its been automatically added to your shopping list")
