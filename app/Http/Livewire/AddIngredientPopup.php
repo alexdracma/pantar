@@ -54,13 +54,26 @@ class AddIngredientPopup extends Component
         }
 
         //implement user already has it
-
         if ($isValidated) {
-            $ingredient = Ingredient::find($this->selectedIngredient);
-            Auth::user()->pantries()->attach( $ingredient, ['amount' => $this->amount, 'unit' => $this->selectedUnit]);
+            $this->addConversionToGrams($this->selectedUnit, $this->selectedIngredient); //add the conversion if it isnt there already
+
+            if (userHasIngredient($this->selectedIngredient)) {
+                $existing = getUserPantry($this->selectedIngredient);
+                $userAmountInGrams = getIngredientTotalAmountInGrams($existing->id, $existing->pivot->unit , $existing->pivot->amount);
+                $selectedAmountInGrams = getIngredientTotalAmountInGrams($this->selectedIngredient, $this->selectedUnit, $this->amount);
+                $newUserTotalAmountInGrams = $selectedAmountInGrams + $userAmountInGrams;
+
+                $newUserAmount = getUserPreferedAmountFromGrams($existing->id, $newUserTotalAmountInGrams);
+
+                Auth::user()->pantries()->updateExistingPivot($existing->id, ['amount' => $newUserAmount]);
+
+            } else {
+                $ingredient = Ingredient::find($this->selectedIngredient);
+                Auth::user()->pantries()->attach( $ingredient, ['amount' => $this->amount, 'unit' => $this->selectedUnit]);
+            }
+
             $this->showAddIngredientModal = false;
             $this->emit('refreshIngredients'); //tell the pantry component to refresh itself
-            $this->addConversionToGrams($this->selectedUnit, $this->selectedIngredient); //add the conversion if it isnt there already
         }
     }
 

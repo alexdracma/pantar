@@ -36,6 +36,14 @@ if (! function_exists('getUserPantry')) {
     }
 }
 
+if (! function_exists('getUserPreferedAmountFromGrams')) {
+    function getUserPreferedAmountFromGrams($ingredient, $amount) {
+        $userPantry = getUserPantry($ingredient);
+        $ingredientOnePreferredUnitInGrams = getIngredientAmountInGrams($ingredient, $userPantry->pivot->unit);
+        return $amount / $ingredientOnePreferredUnitInGrams;
+    }
+}
+
 if (! function_exists('getIngredientTotalAmountInGrams')) {
     function getIngredientTotalAmountInGrams($ingredient, $unit, $amount) {
         return $amount * getIngredientAmountInGrams($ingredient, $unit);
@@ -77,6 +85,12 @@ if (! function_exists('getIngredientAmountInGrams')) {
 if (! function_exists('getUnitNameById')) {
     function getUnitNameById($unit) {
         return \App\Models\Unit::find($unit)->name;
+    }
+}
+
+if (! function_exists('getUnitIdByName')) {
+    function getUnitIdByName($name) {
+        return \App\Models\Unit::firstWhere('name', $name)->id;
     }
 }
 

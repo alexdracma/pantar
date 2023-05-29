@@ -50,6 +50,11 @@
              class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 row-cols-xxl-6 position-relative g-0 p-0 mb-5 mt-4">
 
             @foreach($shownIngredients as $ingredient)
+                @php
+                    if (is_array($ingredient)) {
+                        $ingredient = \App\Models\Ingredient::find($ingredient['id']);
+                    }
+                @endphp
                 <div class="col">
                     <div class="z-30 d-flex flex-column justify-content-center align-items-center" wire:click="showIngredient({{$ingredient->id}})">
                         <div class="ingredientImage"><img src="{{ $ingredient->getFullImgPath() }}" class="ingredient"></div>
