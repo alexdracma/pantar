@@ -1,4 +1,4 @@
-row-cols-7 > * {
+.row-cols-7 > * {
   flex: 0 0 auto;
   width: 14.2857142857%;
 }
@@ -185,7 +185,6 @@ footer {
   background-color: #F6F4EA;
 }
 footer nav {
-  width: 90%;
   margin: auto;
 }
 footer nav .logo {
